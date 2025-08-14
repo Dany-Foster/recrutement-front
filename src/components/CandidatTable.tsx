@@ -1,4 +1,3 @@
-import { IoPersonAddSharp } from "react-icons/io5";
 import { CiSearch } from "react-icons/ci";
 import { LuChevronsUpDown } from "react-icons/lu";
 import { SlOptions } from "react-icons/sl";
@@ -97,21 +96,13 @@ export default function SortableTable() {
       <CardHeader floated={false} shadow={false} className="rounded-none">
         <div className="mb-8 w-full md:w-auto flex flex-col md:flex-row items-center justify-between gap-8">
           <div>
-            <Typography variant="h5" color="blue-gray">
+            <Typography variant="h5" color="blue-gray" className="uppercase">
               Liste des Candidats
             </Typography>
             <Typography color="gray" className="mt-1 text-[12px] lg:text-[14px] font-normal brea">
               Vous pouvez consulter la liste des candidats, leurs candidatures et
               leurs offres d'emploi.
             </Typography>
-          </div>
-          <div className="flex shrink-0 lg:flex-col gap-2 sm:flex-row">
-            <Button variant="outlined" size="sm">
-              Tout afficher
-            </Button>
-            <Button className="flex items-center gap-3" size="sm">
-              <IoPersonAddSharp strokeWidth={2} className="h-4 w-4" /> Ajouter un Candidat
-            </Button>
           </div>
         </div>
         {/** Input recherche et le bouton group */}

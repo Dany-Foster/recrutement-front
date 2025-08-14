@@ -12,7 +12,6 @@ const RecrutmentChart = () => {
                 show: true,
                 borderColor: '#E0E0E0',
                 strokeDashArray: 5,
-
             },
             xaxis: {
                 categories: ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"],

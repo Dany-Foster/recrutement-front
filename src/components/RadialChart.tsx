@@ -10,16 +10,22 @@ export default function DonutChart() {
     plotOptions: {
       pie: {
         donut: {
-          size: "70%", // Taille du trou
+          size: "60%", // Taille du trou
           labels: {
             show: true,
             total: {
               show: true,
               label: "Total",
               fontSize: "20px",
-              color: "#333",
+              color: "#000",
               fontWeight: "bold",
             },
+            value: {
+              show: true,
+              fontSize: "18px",
+              color: "#78909c",
+              fontWeight: "bold",
+            }
           },
         },
       },
@@ -34,11 +40,11 @@ export default function DonutChart() {
         top: 2,
         left: 2,
         blur: 4,
-        opacity: 1,
+        opacity: 0.5,
       },
     },
     legend: {
-      position: "right",
+      position: "bottom",
       labels: {
         colors: "#333",
         useSeriesColors: false,
@@ -56,7 +62,7 @@ export default function DonutChart() {
 
   return (
     <div className="p-4">
-      <Chart options={options} series={series} type="donut" height={250} />
+      <Chart options={options} series={series} type="donut" height={300} />
     </div>
   );
 }

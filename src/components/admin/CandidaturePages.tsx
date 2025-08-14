@@ -1,6 +1,5 @@
-import { DataTable, ToggleButtons, ScrollContent } from "components";
-import ExampleInput from "components/ExampleInput";
-import { useState } from "react";
+// import { DataTable, ToggleButtons, ScrollContent } from "components";
+// import ExampleInput from "components/ExampleInput";
 
 
 const CandidaturePages = () => {
@@ -27,7 +26,7 @@ export function FormCandidat() {
   return (
     <div className="w-full lg:px-0 lg:w-[500px] flex items-center shadow-md bg-white rounded-md p-4">
       <form className="flex flex-col lg:flex-row w-full lg:w-[500px] justify-start gap-2 items-center">
-        <ExampleInput/>
+        {/* <ExampleInput/> */}
         <button className="text-[12px] m-auto font-bold border-1 bg-white border-[#000] text-[#000] px-4 py-2 rounded-md hover:bg-[#000] hover:text-[#F5F7F9] mr-3">Ajouter</button>
       </form>
     </div>
@@ -35,7 +34,6 @@ export function FormCandidat() {
 }
 
 export function SectionCandidat(){
-  const  [data, setData] = useState([])
   return (
     <section className="w-full px-2 lg:px-0 lg:pr-4 mt-2">
       <div className="w-full bg-white shadow-md rounded-md">
@@ -48,7 +46,7 @@ export function SectionCandidat(){
             </p>
           </div>
           <div className="w-full flex flex-col lg:flex-row gap-2 items-center justify-between ">
-            <ToggleButtons/>
+            {/* <ToggleButtons/> */}
             <div className="flex items-center gap-2 ">
               <div className="w-[300px] bg-[#F5F7F9] px-4 py-2  rounded-md border-1 border-[#75767C]">
                 <input
@@ -63,7 +61,7 @@ export function SectionCandidat(){
           {/* Here you can add a table or list to display candidates
           <p className="text-[14px] text-gray-600">Aucune candidature trouvée.</p> */}
           {/* Placeholder for candidates list */}
-          <DataTable />
+          {/* <DataTable /> */}
         </div>
       </div>
     </section>

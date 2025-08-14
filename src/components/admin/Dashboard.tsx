@@ -3,13 +3,10 @@ import { MdOutlineWorkOutline } from "react-icons/md";
 import { PiReadCvLogoFill } from "react-icons/pi";
 import { HiOutlineInformationCircle } from "react-icons/hi";
 
-// import { ToggleButtons } from "components";
-import { NavLink } from "react-router-dom";
-// import { useState } from "react";
 import RecrutmentChart from "../ChartReact";
 import CandidatChart from "../RadialChart";
-import { CandidatTable, OffreTable } from "..";
-import { Card, CardHeader, IconButton, Tooltip, Typography } from "@material-tailwind/react";
+import { CandidatTable } from "..";
+import { Button, Card, CardBody, CardHeader, IconButton, Tooltip, Typography } from "@material-tailwind/react";
 import { SlOptions } from "react-icons/sl";
 
 
@@ -29,30 +26,50 @@ export function Container(){
         </div>
         <div className="w-full flex lg:flex-row flex-col lg:items-center lg:justify-start gap-[25px]">
           <TableauBord />
-          <div  className="max-w-full lg:w-[calc(100%-225px)] h-[369px] bg-white rounded-md shadow-md p-3">
-            <div  className="w-full h-full pt-4">
+          <Card  className="max-w-full lg:w-[calc(100%-225px)] h-[369px]">
+            <CardBody>
               <RecrutmentChart />
-            </div>
-          </div>
-        </div>
-        <div  className="mt-4 flex lg:flex-row flex-col gap-[18px]">
-          <CandidatTable/>
-          <Card className="w-full h-[360px] lg:w-[calc(100%-700px)] bg-white rounded-md shadow-md p-4">
-            <CardHeader floated={false} shadow={false} className="flex items-center justify-between py-2">
-              <Typography variant="h5" color="black" className="text-[16px]">Candidat par Statut</Typography>
-                <Tooltip content="Modifier l'offre">
-                  <IconButton variant="text">
-                    <SlOptions className="h-4 w-4" />
-                  </IconButton>
-                </Tooltip>
-            </CardHeader>
-            <div className="w-full mt-2">
-              <CandidatChart />
-            </div>
+            </CardBody>
           </Card>
         </div>
+        {/* Section Candidat et modification des informations personnelles */}
+        <div  className="mt-4 flex lg:flex-row flex-col gap-[18px]">
+          <CandidatTable/>
+          <div className="w-full lg:w-[calc(100%-700px)] flex flex-col gap-2">
+            <Card className="w-full h-[calc(100%-400px)]">
+              <CardHeader className="w-full rounded-none flex justify-between px-2 text-center" floated={false} shadow={false}>
+                <Typography variant="h5" color="black" className="text-[14px] uppercase">Ajout de Candidat</Typography>
+              </CardHeader>
+              <CardBody className="flex flex-col justify-center items-center gap-2">
+                <div className="w-full flex flex-col items-center justify-center h-[150px] border-2 border-dashed border-gray-400 rounded-lg">
+                  <Typography>
+                    Insérer un fichier de format
+                  </Typography>
+                  <Typography variant="small" className="text-[12px] font-semibold">
+                    .pdf .word .csv
+                  </Typography>
+                </div>
+                <Button className="text-[12px]" size="sm">Ajouter le candidat</Button>
+                <form action="" className="">
+                  <input
+                    type="file"
+                    className="hidden"
+                  />
+                </form>
+              </CardBody>
+            </Card>
+            <Card className="w-full h-[400px] bg-white shadow-md p-2">
+              <CardHeader floated={false} shadow={false} className="flex items-center rounded-none justify-center px-1 ">
+                <Typography variant="h5" color="black" className="text-[16px] uppercase">Candidat répartie par Statut</Typography>
+              </CardHeader>
+              <div className="w-full mt-2">
+                <CandidatChart />
+              </div>
+            </Card>
+          </div>
+        </div>
+        {/* Section Offre et modification des informations personnelles */}
         <div className="w-full lg:w-[700px] mt-4 flex flex-col">
-          <OffreTable />
         </div>
       </div>
   );
@@ -140,73 +157,6 @@ export function TableauBord(){
 }
 
 
-export function OffreSection(){
-  return (
-    <section className="w-full mt-2 flex flex-col lg:flex-row justify-between gap-2" >
-      <div className=" shadow-md rounded-md w-full lg:w-[650px]  bg-white mt-4">
-        <div className="flex flex-col justify-arround gap-4 py-4 px-2">
-          <div className="">
-            <h3 className="text-[18px] font-bold ">Liste des offres d'emplois</h3>
-            <p className="text-[14px] font-normal text-[#75767C]">
-              Vous pouvez consulter la liste des offres d'emplois, leurs candidatures et
-              leurs candidats.
-            </p>
-          </div>
-          <div className="w-full flex items-center justify-between gap-2 ">
-            <div className="flex lg:flex-row lg:items-center gap-2 ">
-              <div className="w-[300px] bg-[#F5F7F9] px-4 py-2 rounded-md border-1 border-[#75767C]">
-                <input
-                  type="text"
-                  placeholder="Rechercher une offre d'emploi"
-                  className="w-full outline-none text-[14px] text-[#000]  placeholder:text-[14px]"
-                  value=""
-                  />
-              </div>
-              <NavLink
-                to="/admin/offres"
-                className="text-[12px] m-auto font-bold border-1 bg-white border-[#000] text-[#000] px-4 py-2 rounded-md hover:bg-[#000] hover:text-[#F5F7F9] flex items-center gap-2"
-                >
-                  Ajouter
-              </NavLink>
-            </div>
-          </div>
-          {/* Here you can add a table or list to display job offers */}
-          {/* <OffreTable/> */}
-          {/* Placeholder for job offers list */}
-        </div>
-      </div>
-      <div className="shadow-md rounded-md w-full lg:w-[calc(100%-600px)] bg-white mt-4">
-        <div className="flex flex-col justify-arround gap-4 p-4">
-          <div className="">
-            <h3 className="text-[18px] font-bold ">Liste des postes</h3>
-          </div>
-          <div className="w-full flex items-center justify-between gap-2 ">
-            <div className="flex lg:flex-row lg:items-center gap-2 ">
-              <div className=" bg-[#F5F7F9] px-4 py-2  rounded-md border-1 border-[#75767C]">
-                <input
-                  type="text"
-                  placeholder="Rechercher un poste"
-                  className="w-full outline-none text-[14px] text-[#000]  placeholder:text-[14px]"
-                  value=""
-                  />
-              </div>
-              <NavLink
-                to="/admin/offres"
-                className="text-[12px] m-auto font-bold border-1 bg-white border-[#000] text-[#000] px-4 py-2 rounded-md hover:bg-[#000] hover:text-[#F5F7F9] flex items-center gap-2"
-                >
-                  Ajouter
-              </NavLink>
-            </div>
-          </div>
-          <div className="w-full  mt-2">
-            {/* Placeholder for job offers analysis chart */}
-            {/* <TabPost/> */}
-          </div>
-        </div>
-      </div>
-    </section>
-  )
-}
 
 const Dashboard = () => {
   return (

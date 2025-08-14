@@ -1,4 +1,3 @@
-import { IoPersonAddSharp } from "react-icons/io5";
 import { CiSearch } from "react-icons/ci";
 import { LuChevronsUpDown } from "react-icons/lu";
 import { SlOptions } from "react-icons/sl";
@@ -87,14 +86,14 @@ export default function SortableTable() {
               leurs candidats.
             </Typography>
           </div>
-          <div className="flex shrink-0 lg:flex-col gap-2 sm:flex-row">
+          {/* <div className="flex shrink-0 lg:flex-col gap-2 sm:flex-row">
             <Button variant="outlined" size="sm">
               Tout afficher
             </Button>
             <Button className="flex items-center gap-3" size="sm">
               <IoPersonAddSharp strokeWidth={2} className="h-4 w-4" /> Ajouter un Offre
             </Button>
-          </div>
+          </div> */}
         </div>
         {/** Input recherche et le bouton group */}
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
