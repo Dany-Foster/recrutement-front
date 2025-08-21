@@ -1,10 +1,9 @@
 import { createBrowserRouter } from "react-router-dom";
 
 import AdminLayout from "./components/admin/AdminLayout";
-import Dashboard from "./components/admin/dashboard";
+import Dashboard from "./components/admin/Dashboard";
 import OffreLayout from "./components/admin/OffreLayout";
-
-
+import CandidaturePages from "./components/admin/CandidaturePages";
 
 const root = createBrowserRouter([
   {
@@ -13,15 +12,15 @@ const root = createBrowserRouter([
     children: [
       {
         path: "Tableau-de-bord",
-        element: <Dashboard/>,
+        element: <Dashboard />,
       },
       {
         path: "candidats",
-        element: <div>Candidats</div>,
+        element: <CandidaturePages />,
       },
       {
         path: "offres",
-        element: <OffreLayout/>,
+        element: <OffreLayout />,
       },
       {
         path: "analyses",
@@ -31,12 +30,8 @@ const root = createBrowserRouter([
         path: "postes",
         element: <div>Entretiens</div>,
       },
-
     ],
   },
-])
+]);
 
-
-export default root
-
-
+export default root;

@@ -7,3 +7,4 @@ export { default as CandidatChart } from "./RadialChart";
 export { default as RecrutmentChart } from "./ChartReact";
 export { default as CandidatTable} from "./CandidatTable";
 export { default as OffreTable} from "./OffreTable";
+export { default as OfferChart} from "./OfferChart";

@@ -21,7 +21,7 @@ declare global {
       placeholder?: string | undefined;
       onPointerEnterCapture?: ReactEventHandler<T> | undefined;
       onPointerLeaveCapture?: ReactEventHandler<T> | undefined;
-      crossOrigin?: string | undefined
+      crossOrigin?: string | undefined;
     }
   }
 }

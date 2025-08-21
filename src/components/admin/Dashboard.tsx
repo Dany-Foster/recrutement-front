@@ -2,12 +2,16 @@ import { HiMiniUserGroup } from "react-icons/hi2";
 import { MdOutlineWorkOutline } from "react-icons/md";
 import { PiReadCvLogoFill } from "react-icons/pi";
 import { HiOutlineInformationCircle } from "react-icons/hi";
+import { IoMdAdd } from "react-icons/io";
+import { MdAccessTime } from "react-icons/md";
 
 import RecrutmentChart from "../ChartReact";
 import CandidatChart from "../RadialChart";
 import { CandidatTable } from "..";
-import { Button, Card, CardBody, CardHeader, IconButton, Tooltip, Typography } from "@material-tailwind/react";
-import { SlOptions } from "react-icons/sl";
+import { Button, Card, CardBody, CardFooter, CardHeader, Input, Typography } from "@material-tailwind/react";
+import { CiSearch } from "react-icons/ci";
+import OfferChart from "../OfferChart";
+// import { SlOptions } from "react-icons/sl";
 
 
 
@@ -19,7 +23,7 @@ export function Container(){
         >
         <div className="">
           <h3 className="text-[20px] font-bold">TABLEAU DE BORD</h3>
-          <p className="text-[14px] font-normal text-[#75767C]">
+          <p className="pl-2 text-[14px] font-normal text-[#75767C]">
             Bienvenue sur votre tableau de bord, vous pouvez consulter vos
             candidatures, vos offres d'emploi et vos analyses.
           </p>
@@ -36,8 +40,16 @@ export function Container(){
         <div  className="mt-4 flex lg:flex-row flex-col gap-[18px]">
           <CandidatTable/>
           <div className="w-full lg:w-[calc(100%-700px)] flex flex-col gap-2">
-            <Card className="w-full h-[calc(100%-400px)]">
-              <CardHeader className="w-full rounded-none flex justify-between px-2 text-center" floated={false} shadow={false}>
+            <Card className="w-full h-[400px] bg-white shadow-md p-2">
+              <CardHeader floated={false} shadow={false} className="flex items-center rounded-none justify-center px-1 ">
+                <Typography variant="h5" color="black" className="text-[16px] uppercase">Candidat répartie par Statut</Typography>
+              </CardHeader>
+              <div className="w-full mt-2">
+                <CandidatChart />
+              </div>
+            </Card>
+            <Card className="w-full h-[calc(100%-300px)]">
+              <CardHeader className="rounded-none" floated={false} shadow={false}>
                 <Typography variant="h5" color="black" className="text-[14px] uppercase">Ajout de Candidat</Typography>
               </CardHeader>
               <CardBody className="flex flex-col justify-center items-center gap-2">
@@ -58,19 +70,99 @@ export function Container(){
                 </form>
               </CardBody>
             </Card>
-            <Card className="w-full h-[400px] bg-white shadow-md p-2">
-              <CardHeader floated={false} shadow={false} className="flex items-center rounded-none justify-center px-1 ">
-                <Typography variant="h5" color="black" className="text-[16px] uppercase">Candidat répartie par Statut</Typography>
-              </CardHeader>
-              <div className="w-full mt-2">
-                <CandidatChart />
-              </div>
-            </Card>
           </div>
         </div>
-        {/* Section Offre et modification des informations personnelles */}
-        <div className="w-full lg:w-[700px] mt-4 flex flex-col">
-        </div>
+        {/* Section Suivi de candidature lors de l'entretien*/}
+        <section className="w-full mt-2 flex flex-col lg:flex-row gap-2">
+          <Card className="w-full lg:w-[500px]">
+            <CardHeader floated={false} shadow={false} className="rounded-none">
+              <div className="flex items-center justify-between">
+                <div className="flex flex-col gap-[4px]">
+                  <Typography variant="h5" className="text-[18px] font-semibold uppercase text-black">
+                    Offres d'emplois
+                  </Typography>
+                </div>
+                  <Button className="flex items-center gap-2" size="sm">
+                    <IoMdAdd size={20}/> Ajouter
+                  </Button>
+              </div>
+            </CardHeader>
+            <CardBody className="flex flex-col gap-2">
+              <div className="w-full">
+                <Input
+                  type="search"
+                  label="Rechercher"
+                  icon={<CiSearch className="h-5 w-5" />}
+                />
+              </div>
+              {/* Listes d'offres */}
+              <div className="w-full border border-black rounded-lg p-2 hover:shadow-lg flex items-center justify-between">
+                <div className="flex flex-col gap-[4px]">
+                  <Typography variant="h5" className="text-[14px] font-semibold text-black">Développeur Fullstack Js</Typography>
+                  <Typography variant="small" className="text-[12px] font-medium">20 Jul 2025 - 10:00 AM</Typography>
+                </div>
+                <div className="flex- flex-col gap-[4px]">
+                  <Typography variant="small" className="text-[12px] font-medium text-gray-600 flex gap-1"> <MdAccessTime size={15}/> Temps plein</Typography>
+                  <Typography variant="small" className="text-[12px] font-medium text-gray-600"><span className="font-semibold text-black">Contrat:</span> <span>CDI</span></Typography>
+                </div>
+                <div className="flex- flex-col gap-[4px]">
+                  <Button size="sm">Détails</Button>
+                </div>
+              </div>
+              <div className="w-full border border-black rounded-lg p-2 hover:shadow-lg flex items-center justify-between">
+                <div className="flex flex-col gap-[4px]">
+                  <Typography variant="h5" className="text-[14px] font-semibold text-black">Développeur Fullstack PHP</Typography>
+                  <Typography variant="small" className="text-[12px] font-medium">20 Jul 2025 - 10:00 AM</Typography>
+                </div>
+                <div className="flex- flex-col gap-[4px]">
+                  <Typography variant="small" className="text-[12px] font-medium text-gray-600 flex gap-1"> <MdAccessTime size={15}/> Temps plein</Typography>
+                  <Typography variant="small" className="text-[12px] font-medium text-gray-600"><span className="font-semibold text-black">Contrat:</span> <span>CDI</span></Typography>
+                </div>
+                <div className="flex- flex-col gap-[4px]">
+                  <Button size="sm">Détails</Button>
+                </div>
+              </div>
+              <div className="w-full border border-black rounded-lg p-2 hover:shadow-lg flex items-center justify-between">
+                <div className="flex flex-col gap-[4px]">
+                  <Typography variant="h5" className="text-[14px] font-semibold text-black">Développeur JAVA</Typography>
+                  <Typography variant="small" className="text-[12px] font-medium">20 Jul 2025 - 10:00 AM</Typography>
+                </div>
+                <div className="flex- flex-col gap-[4px]">
+                  <Typography variant="small" className="text-[12px] font-medium text-gray-600 flex gap-1"> <MdAccessTime size={15}/> Temps plein</Typography>
+                  <Typography variant="small" className="text-[12px] font-medium text-gray-600"><span className="font-semibold text-black">Contrat:</span> <span>CDI</span></Typography>
+                </div>
+                <div className="flex- flex-col gap-[4px]">
+                  <Button size="sm">Détails</Button>
+                </div>
+              </div>
+              <div className="w-full border border-black rounded-lg p-2 hover:shadow-lg flex items-center justify-between">
+                <div className="flex flex-col gap-[4px]">
+                  <Typography variant="h5" className="text-[14px] font-semibold text-black">Administrateur réseau</Typography>
+                  <Typography variant="small" className="text-[12px] font-medium">20 Jul 2025 - 10:00 AM</Typography>
+                </div>
+                <div className="flex- flex-col gap-[4px]">
+                  <Typography variant="small" className="text-[12px] font-medium text-gray-600 flex gap-1"> <MdAccessTime size={15}/> Temps plein</Typography>
+                  <Typography variant="small" className="text-[12px] font-medium text-gray-600"><span className="font-semibold text-black">Contrat:</span> <span>CDI</span></Typography>
+                </div>
+                <div className="flex- flex-col gap-[4px]">
+                  <Button size="sm">Détails</Button>
+                </div>
+              </div>
+            </CardBody>
+            <CardFooter>
+              <Button className="w-full" size="sm">Tout afficher</Button>
+            </CardFooter>
+          </Card>
+          <Card className="mt-2 w-full lg:w-[calc(100%-500px)]">
+            <CardHeader floated={false} shadow={false} className="rounded-none">
+              <Typography variant="h5" className="text-[14px] font-semibold text-black">L'évolution de nombre d'offre crée par période</Typography>
+            </CardHeader>
+            <CardBody>
+              <OfferChart/>
+            </CardBody>
+          </Card>
+        </section>
+        {/* suivie de candidature sur l'entretien */}
       </div>
   );
 }

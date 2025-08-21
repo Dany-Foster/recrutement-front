@@ -1,5 +1,4 @@
 import { CiSearch } from "react-icons/ci";
-import { LuChevronsUpDown } from "react-icons/lu";
 import { SlOptions } from "react-icons/sl";
 import {
   Card,
@@ -128,7 +127,7 @@ export default function SortableTable() {
         <table className="mt-4 w-full min-w-max table-auto text-left">
           <thead>
             <tr>
-              {TABLE_HEAD.map((head, index) => (
+              {TABLE_HEAD.map((head) => (
                 <th
                   key={head}
                   className="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50"
@@ -138,10 +137,7 @@ export default function SortableTable() {
                     color="blue-gray"
                     className="flex items-center justify-between gap-2 font-normal leading-none opacity-70"
                   >
-                    {head}{" "}
-                    {index !== TABLE_HEAD.length - 1 && (
-                      <LuChevronsUpDown strokeWidth={2} className="h-4 w-4" />
-                    )}
+                    {head}
                   </Typography>
                 </th>
               ))}
@@ -236,10 +232,10 @@ export default function SortableTable() {
           </Typography>
         </div>
         <div className="flex gap-2">
-          <Button variant="outlined" size="sm">
+          <Button  size="sm">
             Précedent
           </Button>
-          <Button variant="outlined" size="sm">
+          <Button size="sm">
             Suivant
           </Button>
         </div>
