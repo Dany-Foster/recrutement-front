@@ -1,5 +1,7 @@
 import { CiSearch } from "react-icons/ci";
 import { SlOptions } from "react-icons/sl";
+import { IoIosClose } from "react-icons/io";
+import Chart  from "react-apexcharts";
 import {
   Card,
   CardHeader,
@@ -15,7 +17,18 @@ import {
   Avatar,
   IconButton,
   Tooltip,
+  ChipProps,
+  Progress,
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  TabsBody,
+  TabPanel,
+  DialogFooter,
 } from "@material-tailwind/react";
+import { useState } from "react";
+import { PiLock } from "react-icons/pi";
+import { NavLink } from "react-router-dom";
 const TABS = [
   {
     label: "Tout",
@@ -48,8 +61,9 @@ const TABLE_ROWS = [
     email: "john@creative-tim.com",
     job: "Manager",
     org: "Organization",
-    online: true,
-    date: "23/04/18",
+    online: "En cours",
+    date: "60%",
+    bg: "blue",
   },
   {
     img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-2.jpg",
@@ -57,8 +71,9 @@ const TABLE_ROWS = [
     email: "alexa@creative-tim.com",
     job: "Programator",
     org: "Developer",
-    online: false,
-    date: "23/04/18",
+    online: "Entretien",
+    date: "80%",
+    bg: "yellow",
   },
   {
     img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-1.jpg",
@@ -66,8 +81,9 @@ const TABLE_ROWS = [
     email: "laurent@creative-tim.com",
     job: "Executive",
     org: "Projects",
-    online: false,
-    date: "19/09/17",
+    online: "Reçu",
+    date: "75%",
+    bg: "green",
   },
   {
     img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-4.jpg",
@@ -75,8 +91,9 @@ const TABLE_ROWS = [
     email: "michael@creative-tim.com",
     job: "Programator",
     org: "Developer",
-    online: true,
-    date: "24/12/08",
+    online: "Rejeté",
+    date: "20%",
+    bg: "red",
   },
   {
     img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-5.jpg",
@@ -84,12 +101,15 @@ const TABLE_ROWS = [
     email: "richard@creative-tim.com",
     job: "Manager",
     org: "Executive",
-    online: false,
-    date: "04/10/21",
+    online: "En cours",
+    date: "40%",
+    bg: "blue",
   },
 ];
  
 export default function SortableTable() {
+  const [Open, setOpen] = useState(false)
+  const handleOpen = () => setOpen(!Open);
   return (
     <Card className="h-full w-full lg:w-[700px]">
       <CardHeader floated={false} shadow={false} className="rounded-none">
@@ -145,12 +165,11 @@ export default function SortableTable() {
           </thead>
           <tbody>
             {TABLE_ROWS.map(
-              ({ img, name, email, job, org, online, date }, index) => {
+              ({ img, name, email, job, org, online, date, bg }, index) => {
                 const isLast = index === TABLE_ROWS.length - 1;
                 const classes = isLast
                   ? "p-4"
                   : "p-4 border-b border-blue-gray-50";
- 
                 return (
                   <tr key={name}>
                     <td className={classes}>
@@ -197,8 +216,8 @@ export default function SortableTable() {
                         <Chip
                           variant="ghost"
                           size="sm"
-                          value={online ? "online" : "offline"}
-                          color={online ? "green" : "blue-gray"}
+                          value={online}
+                          color={bg as ChipProps["color"]}
                         />
                       </div>
                     </td>
@@ -210,10 +229,11 @@ export default function SortableTable() {
                       >
                         {date}
                       </Typography>
+                      <Progress value={50} color="gray" />
                     </td>
                     <td className={classes}>
-                      <Tooltip content="Edit User">
-                        <IconButton variant="text">
+                      <Tooltip content="Détails">
+                        <IconButton variant="text" onClick={handleOpen}>
                           <SlOptions className="h-4 w-4" />
                         </IconButton>
                       </Tooltip>
@@ -232,14 +252,350 @@ export default function SortableTable() {
           </Typography>
         </div>
         <div className="flex gap-2">
-          <Button  size="sm">
+          <Button  size="sm" variant="outlined">
             Précedent
           </Button>
-          <Button size="sm">
+          <Button size="sm" variant="filled">
             Suivant
           </Button>
         </div>
       </CardFooter>
+      <ModalCardCandidat open={Open} handleOpen={handleOpen}/>
     </Card>
   );
+}
+
+
+export function ModalCardCandidat({open, handleOpen}: {open: boolean, handleOpen: () => void}){
+  return (
+    <Dialog size="lg" open={open} handler={handleOpen}>
+      <DialogHeader className="relative">
+        <Typography variant="h5" color="blue-gray" className="">
+          Détails du Candidat
+        </Typography>
+        <IconButton
+          variant="text"
+          color="blue-gray"
+          onClick={handleOpen}
+          className="!absolute top-2.5 right-2.5"
+        >
+          <IoIosClose className="h-5 w-5" />
+        </IconButton>
+      </DialogHeader>
+      <DialogBody className=" h-[500px] py-2 overflow-hidden">
+        <TabCandidatInfo/>
+      </DialogBody>
+      <DialogFooter>
+        <Button variant="outlined" color="gray" className="mr-1">
+          <span>Organiser un entretien</span>
+        </Button>
+      </DialogFooter>
+    </Dialog>
+  )
+}
+
+export function TabCandidatInfo(){
+  const [activate, setActivate] = useState("Info")
+  return (
+    <Tabs value={activate} className="w-full">
+      <TabsHeader
+        className="rounded-none border-b border-blue-gray-50 bg-transparent p-0"
+        indicatorProps={{
+          className:
+            "bg-transparent border-b-2 border-gray-900 shadow-none rounded-none",
+        }}
+      >
+        <Tab value={"Info"} onClick={() => setActivate("Info")} className={activate === activate ? "text-gray-900" : ""}>Informations</Tab>
+        <Tab value={"Stats"} onClick={() => setActivate("Stats")} className={activate === activate ? "text-gray-900" : ""}>Statistiques</Tab>
+        <Tab value={"Offres"} onClick={() => setActivate("Offres")} className={activate === activate ? "text-gray-900" : ""}>Offres</Tab>
+      </TabsHeader>
+      <TabsBody className="">
+        <TabPanel value={"Info"} className="overflow-y-auto h-[400px]">
+          <ContentInfo/>
+        </TabPanel>
+        <TabPanel value={"Stats"} className="overflow-y-auto h-[400px] p-0">
+          <ContentStatistiques/>
+        </TabPanel>
+        <TabPanel value={"Offres"}>
+          Contenu Offres
+        </TabPanel>
+      </TabsBody>
+    </Tabs>
+  )
+}
+
+
+export function ContentInfo(){
+  return (
+    <div className="w-full flex gap-7 relative h-full">
+      <div className="w-1/3 flex flex-col gap-4 lg:sticky lg:top-0 lg:self-start">
+      {/* Avatar et nom */}
+        <Avatar src="https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg" alt="image" size="xxl"/>
+        <Typography variant="h5" color="black" className="w-1/2 text-wrap tex">
+          RAZANADRAKOTO Jean Michel
+        </Typography>
+        <Chip value="Manager" size="sm" className="text-[9px] text-center font-semibold max-w-[100px]"/>
+        {/* Contact */}
+        <div className="">
+          <Typography variant="small" color="black" className="text-[14px] font-semibold">
+            Contact :
+          </Typography>
+          <div className="ml-2">
+            <Typography variant="small" color="gray" className="text-[12px]">
+              +261 34 12 345 67
+            </Typography>
+            <Typography variant="small" color="gray" className="text-[12px]">
+              2BvK7@example.com
+            </Typography>
+          </div>
+        </div>
+        {/* Adresse */}
+        <div className="">
+          <Typography variant="small" color="black" className="text-[14px] font-semibold">
+            Adresse :
+          </Typography>
+          <div className="ml-2">
+            <Typography variant="small" color="gray" className="text-[12px]">
+             123 Rue Exemple, Antananarivo, Madagascar
+            </Typography>
+          </div>
+        </div>
+        {/* Langues */}
+        <div className="">
+          <Typography variant="small" color="black" className="text-[14px] font-semibold">
+            Langues :
+          </Typography>
+          <div className="ml-2 flex gap-1">
+            <Chip value="Français" size="sm" variant="outlined"  className="text-[9px] font-semibold"/>
+            <Chip value="Anglais" size="sm" variant="outlined" className="text-[9px] font-semibold"/>
+            <Chip value="Malagasy" size="sm" variant="outlined" className="text-[9px] font-semibold"/>
+          </div>
+        </div>
+        {/* Score du candidat */}
+        <div className="w-full">
+          <div className="mb-2 flex items-center justify-between gap-4">
+            <Typography variant="h6" color="blue-gray">
+              Score
+            </Typography>
+            <Typography variant="h6" color="blue-gray">
+              75%
+            </Typography>
+          </div>
+          <Progress value={75} className="ml-2"/>
+        </div>
+        {/* Lettre de motivation */}
+        <div className="">
+          <Typography variant="small" color="blue-gray" className="text-[14px] font-semibold">
+            Lettre de motivation :
+          </Typography>
+          <Button variant="text" size="sm">Consulter</Button>
+        </div>
+      </div>
+      {/* Informations avancés */}
+      <div className="w-2/3 flex flex-col gap-4">
+        {/* Profil */}
+        <div className="w-full flex flex-col gap-2">
+          <Typography variant="h6" color="blue-gray">
+            Profil :
+          </Typography>
+          <Typography variant="small" color="gray" className="ml-2 text-[12px] font-normal text-justify">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+          </Typography>
+        </div>
+        {/* Compétences */}
+        <div className="w-full flex flex-col gap-2">
+          <Typography variant="h6" color="blue-gray">
+            Compétences :
+          </Typography>
+          <div className="ml-2 flex gap-1">
+            <Chip value="HTML" size="sm" variant="outlined" className="text-[9px] font-semibold"/>
+            <Chip value="CSS" size="sm" variant="outlined" className="text-[9px] font-semibold"/>
+            <Chip value="React" size="sm" variant="outlined" className="text-[9px] font-semibold"/>
+          </div>
+        </div>
+        {/* Experiences */}
+        <div className="w-full flex flex-col gap-2">
+          <Typography variant="h6" color="blue-gray" className="">
+            Expériences :
+          </Typography>
+          <div className="ml-2 flex flex-wrap gap-4">
+            <div>
+              <Typography variant="h6" color="black" className="text-[12px] font-semibold">
+                Développeur Web - 2018-2020
+              </Typography>
+              <Typography variant="small" color="gray" className="text-[10px] font-normal">
+                Entreprise ABC, Antananarivo
+              </Typography>
+            </div>
+            <div>
+              <Typography variant="h6" color="black" className="text-[12px] font-semibold">
+                Développeur FullStack JS - 2015-2018
+              </Typography>
+              <Typography variant="small" color="gray" className="text-[10px] font-normal">
+                Entreprise ABC, Antananarivo
+              </Typography>
+            </div>
+            <div>
+              <Typography variant="h6" color="black" className="text-[12px] font-semibold">
+                Développeur Web - 2018-2020
+              </Typography>
+              <Typography variant="small" color="gray" className="text-[10px] font-normal">
+                Entreprise ABC, Antananarivo
+              </Typography>
+            </div>
+          </div>
+        </div>
+        {/* Education */}
+        <div className="w-full flex flex-col gap-2">
+          <Typography variant="h6" color="blue-gray" className="">
+            Formations :
+          </Typography>
+          <div className="ml-2 flex flex-wrap gap-4">
+            <div>
+              <Typography variant="h6" color="black" className="text-[12px] font-semibold">
+                Bachelor en Informatique - 2018-2020
+              </Typography>
+              <Typography variant="small" color="gray" className="text-[10px] font-normal">
+                Université XYZ, Antananarivo
+              </Typography>
+            </div>
+            <div>
+              <Typography variant="h6" color="black" className="text-[12px] font-semibold">
+                Bachelor en Informatique - 2018-2020
+              </Typography>
+              <Typography variant="small" color="gray" className="text-[10px] font-normal">
+                Université XYZ, Antananarivo
+              </Typography>
+            </div>
+          </div>
+        </div>
+        {/* Notes */}
+        <div className="w-full flex flex-col gap-2 rounded-md bg-orange-500 p-2 cursor-pointer">
+          <Typography variant="small" color="blue-gray" className="text-[14px] font-semibold">
+            Notes :
+          </Typography>
+          <Typography variant="small" color="white" className="ml-2 text-[12px] font-normal text-justify">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+          </Typography>
+        </div>
+      </div>
+
+    </div>
+  )
+}
+
+export function ContentStatistiques(){
+  return (
+    <div className="w-full h-full flex-col gap-4">
+      <div className="w-full flex justify-center items-center gap-2">
+        <RadarGraph/>
+        <RadialBarScore score={75} title="Score global"/>
+      </div>
+      <hr  className="my-2"/>
+      <div className="w-full flex justify-center">
+        <div className=" flex flex-col justify-center items-center gap-2">
+          <RadialBarScore score={60} title="Experiences" height={150} width={150}/>
+        </div>
+        <div className=" flex flex-col justify-center items-center gap-2">
+          <RadialBarScore score={50} title="Formations" height={150} width={150}/>
+        </div>
+        <div className=" flex flex-col justify-center items-center gap-2">
+          <RadialBarScore score={55} title="Compétences" height={150} width={150}/>
+        </div>
+        <div className=" flex flex-col justify-center items-center gap-2">
+          <RadialBarScore score={45} title="Langues" height={150} width={150}/>
+        </div>
+        <div className=" flex flex-col justify-center items-center gap-2">
+          <RadialBarScore score={20} title="Autres" height={150} width={150}/>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+
+export function ContentOffres(){
+  return (
+    <div>(-èQZSD BN.?Nqsé"'(- éQZSD</div>
+  )
+}
+
+// Grahpes et stats
+export function RadarGraph(){
+  const [state, setState] = useState({
+            series: [{
+              name: 'Score',
+              data: [80, 50, 30, 40, 100, 50],
+            }],
+            options: {
+              xaxis: {
+                categories: ['Experience', 'Compétences', 'Langues', 'Formation', 'Profil', 'Autres'],
+                labels: {
+                  style: {
+                    colors: ['#000000', '#000000', '#000000', '#000000', '#000000', '#000000'],
+                    fontSize: '12px',
+                    fontWeight: 'bold',
+                  },
+                },
+              },
+              chart: {
+                toolbar: {
+                  show: false
+                },
+                sparkline: {
+                  enabled: false
+                },
+                parentHeightOffset: 0,
+                offsetY: 0,
+                offsetX: 0,
+              }
+            },
+        });
+  return (
+    <div className="">
+      <Chart options={state.options} series={state.series} type="radar" height={350} width={400}  />
+    </div>
+  )
+}
+
+type props = {
+  score: number,
+  title?: string,
+  height?: number,
+  width?: number
+}
+
+export function RadialBarScore({score, title, height, width}: props){
+    const [state, setState] = useState({
+            series: [score],
+            options: {
+              plotOptions: {
+                radialBar: {
+                  hollow: {
+                    size: "70%",
+                  },
+                pie: {
+                  donut: {
+                    size: "70%",
+                    labels: {
+                      show: true,
+                      total: { show: true, label: "Score Global" },
+                    },
+                  },
+                },
+                  dataLabels: {
+                    name: {
+                      fontSize: '12px',
+                      fontweight: 'bold',
+                      color: '#000000',
+                    },
+                  }
+                },
+              },
+              labels: [`${title ? title : "Score"}`],
+            },
+        });
+  return (
+    <Chart options={state.options} series={state.series} type="radialBar" height={height} width={width}/>
+  )
 }

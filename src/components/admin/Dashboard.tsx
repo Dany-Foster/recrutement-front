@@ -28,7 +28,7 @@ export function Container(){
             candidatures, vos offres d'emploi et vos analyses.
           </p>
         </div>
-        <div className="w-full flex lg:flex-row flex-col lg:items-center lg:justify-start gap-[25px]">
+        <div className="w-full flex lg:flex-row flex-col lg:items-center lg:justify-start gap-[25px] mt-4">
           <TableauBord />
           <Card  className="max-w-full lg:w-[calc(100%-225px)] h-[369px]">
             <CardBody>
@@ -106,7 +106,7 @@ export function Container(){
                   <Typography variant="small" className="text-[12px] font-medium text-gray-600"><span className="font-semibold text-black">Contrat:</span> <span>CDI</span></Typography>
                 </div>
                 <div className="flex- flex-col gap-[4px]">
-                  <Button size="sm">Détails</Button>
+                  <Button size="sm" variant="outlined" className="hover:bg-black hover:text-white hover:shadow-md">Détails</Button>
                 </div>
               </div>
               <div className="w-full border border-black rounded-lg p-2 hover:shadow-lg flex items-center justify-between">
@@ -119,7 +119,7 @@ export function Container(){
                   <Typography variant="small" className="text-[12px] font-medium text-gray-600"><span className="font-semibold text-black">Contrat:</span> <span>CDI</span></Typography>
                 </div>
                 <div className="flex- flex-col gap-[4px]">
-                  <Button size="sm">Détails</Button>
+                  <Button size="sm" variant="outlined" className="hover:bg-black hover:text-white hover:shadow-md">Détails</Button>
                 </div>
               </div>
               <div className="w-full border border-black rounded-lg p-2 hover:shadow-lg flex items-center justify-between">
@@ -132,7 +132,7 @@ export function Container(){
                   <Typography variant="small" className="text-[12px] font-medium text-gray-600"><span className="font-semibold text-black">Contrat:</span> <span>CDI</span></Typography>
                 </div>
                 <div className="flex- flex-col gap-[4px]">
-                  <Button size="sm">Détails</Button>
+                  <Button size="sm" variant="outlined" className="hover:bg-black hover:text-white hover:shadow-md">Détails</Button>
                 </div>
               </div>
               <div className="w-full border border-black rounded-lg p-2 hover:shadow-lg flex items-center justify-between">
@@ -145,7 +145,7 @@ export function Container(){
                   <Typography variant="small" className="text-[12px] font-medium text-gray-600"><span className="font-semibold text-black">Contrat:</span> <span>CDI</span></Typography>
                 </div>
                 <div className="flex- flex-col gap-[4px]">
-                  <Button size="sm">Détails</Button>
+                  <Button size="sm" variant="outlined" className="hover:bg-black hover:text-white hover:shadow-md">Détails</Button>
                 </div>
               </div>
             </CardBody>
@@ -153,7 +153,7 @@ export function Container(){
               <Button className="w-full" size="sm">Tout afficher</Button>
             </CardFooter>
           </Card>
-          <Card className="mt-2 w-full lg:w-[calc(100%-500px)]">
+          <Card className=" w-full lg:w-[calc(100%-500px)]">
             <CardHeader floated={false} shadow={false} className="rounded-none">
               <Typography variant="h5" className="text-[14px] font-semibold text-black">L'évolution de nombre d'offre crée par période</Typography>
             </CardHeader>
@@ -179,7 +179,7 @@ export function CardInfo({children}: {children?: React.ReactNode}) {
 export function TableauBord(){
 
   return (
-    <div className="mt-4 pb-2">
+    <div className="pb-2 h-full">
       <section className="w-full flex flex-wrap lg:flex-col lg:justify-start gap-[15px]">
         <div className="w-full lg:w-[250px] bg-white rounded-md shadow-md py-2 px-3">
           <div  className=" w-full h-full flex flex-col justify-start gap-[4px]">

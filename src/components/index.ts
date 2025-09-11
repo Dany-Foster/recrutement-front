@@ -8,3 +8,7 @@ export { default as RecrutmentChart } from "./ChartReact";
 export { default as CandidatTable} from "./CandidatTable";
 export { default as OffreTable} from "./OffreTable";
 export { default as OfferChart} from "./OfferChart";
+export {default as ChartReact} from "./ChartReact";
+export { default as AdminLayout} from "./admin/AdminLayout";
+export { default as RadarChart} from "./RadarChart";
+export { default as Evaluation} from "./EvaluationCandidat";

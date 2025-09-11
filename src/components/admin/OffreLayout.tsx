@@ -1,5 +1,6 @@
-import { Typography } from "@material-tailwind/react";
+import {  Typography } from "@material-tailwind/react";
 import { OffreTable } from "..";
+
 
 const OffreLayout = () => {
   return (

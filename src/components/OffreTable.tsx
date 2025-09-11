@@ -15,7 +15,9 @@ import {
   Tab,
   IconButton,
   Tooltip,
+  ChipProps,
 } from "@material-tailwind/react";
+import { MdOutlineCardTravel } from "react-icons/md";
 const TABS = [
 {
     label: "Tout",
@@ -36,39 +38,28 @@ const TABLE_HEAD = ["Offres", "Poste", "Status", "Nb candidat", ""];
  
 const TABLE_ROWS = [
   {
-    name: "John Michael",
-    email: "john@creative-tim.com",
-    job: "Manager",
-    online: true,
-    bnCandidat: "25",
-  },
-  {
-    name: "Alexa Liras",
-    email: "alexa@creative-tim.com",
-    job: "Programator",
-    online: false,
-    bnCandidat: "5",
-  },
-  {
-    name: "Laurent Perrier",
+    name: "Développeur Javascript",
     email: "laurent@creative-tim.com",
-    job: "Executive",
-    online: false,
+    job: "Développeur Frontend",
+    online: "Cloturé",
     bnCandidat: "45",
+    bg: "red"
   },
   {
-    name: "Michael Levi",
+    name: "Recherche de designer UI/UX",
     email: "michael@creative-tim.com",
-    job: "Programator",
-    online: true,
+    job: "Créateur Site Web",
+    online: "Ouvert",
     bnCandidat: "24",
+    bg: "green"
   },
   {
-    name: "Richard Gran",
-    email: "richard@creative-tim.com",
-    job: "Manager",
-    online: false,
+    name: "Developeur fullstack",
+    email: "RichnoCrop@creative-tim.com",
+    job: "Ingénieur Logiciel",
+    online: "Cloturé",
     bnCandidat: "21",
+    bg: "red"
   },
 ];
  
@@ -86,14 +77,11 @@ export default function SortableTable() {
               leurs candidats.
             </Typography>
           </div>
-          {/* <div className="flex shrink-0 lg:flex-col gap-2 sm:flex-row">
-            <Button variant="outlined" size="sm">
-              Tout afficher
+          <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
+            <Button className="flex items-center gap-3" size="sm" variant="gradient">
+              <MdOutlineCardTravel strokeWidth={2} className="h-4 w-4" /> AJouter une offre
             </Button>
-            <Button className="flex items-center gap-3" size="sm">
-              <IoPersonAddSharp strokeWidth={2} className="h-4 w-4" /> Ajouter un Offre
-            </Button>
-          </div> */}
+          </div>
         </div>
         {/** Input recherche et le bouton group */}
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
@@ -139,7 +127,7 @@ export default function SortableTable() {
           </thead>
           <tbody>
             {TABLE_ROWS.map(
-              ({  name, email, job, online, bnCandidat }, index) => {
+              ({  name , job, online, bnCandidat, bg }, index) => {
                 const isLast = index === TABLE_ROWS.length - 1;
                 const classes = isLast
                   ? "p-4"
@@ -156,13 +144,6 @@ export default function SortableTable() {
                             className="font-normal"
                           >
                             {name}
-                          </Typography>
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal opacity-70"
-                          >
-                            {email}
                           </Typography>
                         </div>
                       </div>
@@ -183,8 +164,8 @@ export default function SortableTable() {
                         <Chip
                           variant="ghost"
                           size="sm"
-                          value={online ? "online" : "offline"}
-                          color={online ? "green" : "blue-gray"}
+                          value={online}
+                          color={bg as ChipProps["color"]}
                         />
                       </div>
                     </td>

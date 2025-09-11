@@ -36,7 +36,7 @@ export default function DonutChart() {
         colors: ["#fff"], // Couleur du texte sur chaque segment
       },
       dropShadow: {
-        enabled: true,
+        enabled: false,
         top: 2,
         left: 2,
         blur: 4,

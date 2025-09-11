@@ -4,8 +4,15 @@ import AdminLayout from "./components/admin/AdminLayout";
 import Dashboard from "./components/admin/Dashboard";
 import OffreLayout from "./components/admin/OffreLayout";
 import CandidaturePages from "./components/admin/CandidaturePages";
+import { LoginCard } from "./components/Authentification/Login";
+import AnalyseLayout from "./components/admin/AnalyseLayout";
+import PostPages from "./components/admin/PostPages";
 
 const root = createBrowserRouter([
+  {
+    path: "/",
+    element: <LoginCard/>,
+  },
   {
     path: "/dashboard",
     element: <AdminLayout />,
@@ -24,11 +31,11 @@ const root = createBrowserRouter([
       },
       {
         path: "analyses",
-        element: <div>Entretiens</div>,
+        element: <AnalyseLayout/>,
       },
       {
         path: "postes",
-        element: <div>Entretiens</div>,
+        element: <PostPages/>,
       },
     ],
   },

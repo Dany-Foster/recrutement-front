@@ -380,32 +380,37 @@ import ApexCharts from "apexcharts";
                 <div className="flex gap-1">
                   <Button id="one_month"
                       size="sm"
+                      variant="outlined"
                       onClick={()=>updateData('one_month')} className={ (state.selection==='one_month' ? 'active' : '')}>
-                    1M
+                    1 Mois
                   </Button>
                    
                   <Button id="six_months"
                       size="sm"
+                      variant="outlined"
                       onClick={()=>updateData('six_months')} className={ (state.selection==='six_months' ? 'active' : '')}>
-                    6M
+                    6 Mois
                   </Button>
                    
                   <Button id="one_year"
                       size="sm"
+                      variant="outlined"
                       onClick={()=>updateData('one_year')} className={ (state.selection==='one_year' ? 'active' : '')}>
-                    1Y
+                    1 Ans
                   </Button>
                    
                   <Button id="ytd"
                       size="sm"
-                      onClick={()=>updateData('ytd')} className={ (state.selection==='ytd' ? 'active' : '')}>
-                    YTD
+                      onClick={()=>updateData('ytd')} className={ (state.selection==='ytd' ? 'active' : '')}
+                      variant="outlined">
+                    Année en Jour
                   </Button>
                    
                   <Button id="all"
                       size="sm"
+                      variant="outlined"
                       onClick={()=>updateData('all')} className={ (state.selection==='all' ? 'active' : '')}>
-                    ALL
+                    Tout
                   </Button>
                 </div>
               

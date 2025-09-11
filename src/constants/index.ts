@@ -22,7 +22,7 @@ export const sidebarItems = [
   {
     id: 5,
     icon: "/assets/icons/job.svg",
-    label: "Postes",
+    label: "Entretiens",
     href: "/dashboard/postes",
   },
   {

@@ -7,7 +7,7 @@ export default function AdminLayout(){
   return (
       <div className="flex flex-col lg:flex-row h-screen w-full">
         <MobileSidebar />
-        <aside className="w-full max-w-[250px] hidden lg:block p-4 bg-white shadow-md">
+        <aside className="w-full max-w-[250px] hidden lg:block py-4 px-2 bg-white shadow-md">
           <NavItems />
         </aside> 
         <aside className="w-full lg:max-w-[calc(100%-250px)] h-full !bg-[#F5F7F9] lg:rounded-xl lg:shadow-md lg:border-2 border-[#EBEDEE] pt-4 lg:pt-2 px-4 py-2">

@@ -12,8 +12,8 @@ export default function NavItems({
   handleClick?: () => void;
 }) {
   const user = {
-    name: "Name Entreprise",
-    Email: "Contact@gmail.com",
+    name: "Vanilla Corp",
+    Email: "VanillaCorp@gmail.com",
     logo: "/assets/icons/logo2.svg",
   };
 
@@ -41,7 +41,7 @@ export default function NavItems({
       <div
         className="flex flex-col justify-between gap-1 h-full pt-4"
       >
-        <div className="w-full flex flex-col">
+        <div className="w-full flex flex-col gap-4">
           <SearchBar />
           <BoutonMenu />
         </div>

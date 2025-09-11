@@ -16,6 +16,8 @@ import {
   Dialog,
   DialogHeader,
   DialogBody,
+  ChipProps,
+  Progress,
 } from "@material-tailwind/react";
 import { useState } from "react";
 
@@ -48,14 +50,15 @@ const TABS = [
 ];
 const TABLE_HEAD = ["Candidat", "Poste", "Status", "Score", ""];
 const TABLE_ROWS = [
-  {
+{
     img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg",
     name: "John Michael",
     email: "john@creative-tim.com",
     job: "Manager",
     org: "Organization",
-    online: true,
-    date: "23/04/18",
+    online: "En cours",
+    date: "55%",
+    bg: "blue",
   },
   {
     img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-2.jpg",
@@ -63,8 +66,9 @@ const TABLE_ROWS = [
     email: "alexa@creative-tim.com",
     job: "Programator",
     org: "Developer",
-    online: false,
-    date: "23/04/18",
+    online: "Entretien",
+    date: "70%",
+    bg: "Yellow",
   },
   {
     img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-1.jpg",
@@ -72,8 +76,9 @@ const TABLE_ROWS = [
     email: "laurent@creative-tim.com",
     job: "Executive",
     org: "Projects",
-    online: false,
-    date: "19/09/17",
+    online: "Reçu",
+    date: "75%",
+    bg: "green",
   },
   {
     img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-4.jpg",
@@ -81,8 +86,9 @@ const TABLE_ROWS = [
     email: "michael@creative-tim.com",
     job: "Programator",
     org: "Developer",
-    online: true,
-    date: "24/12/08",
+    online: "Rejeté",
+    date: "30%",
+    bg: "red",
   },
   {
     img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-5.jpg",
@@ -90,8 +96,9 @@ const TABLE_ROWS = [
     email: "richard@creative-tim.com",
     job: "Manager",
     org: "Executive",
-    online: false,
-    date: "04/10/21",
+    online: "En cours",
+    date: "50%",
+    bg: "blue",
   },
 ];
 export default function CandidaturePages() {
@@ -157,7 +164,7 @@ export default function CandidaturePages() {
             </thead>
             <tbody>
               {TABLE_ROWS.map(
-                ({ img, name, email, job, org, online, date }, index) => {
+                ({ img, name, email, job, org, online, date, bg }, index) => {
                   const isLast = index === TABLE_ROWS.length - 1;
                   const classes = isLast
                     ? "p-4"
@@ -208,8 +215,8 @@ export default function CandidaturePages() {
                           <Chip
                             variant="ghost"
                             size="sm"
-                            value={online ? "online" : "offline"}
-                            color={online ? "green" : "blue-gray"}
+                          value={online}
+                          color={bg as ChipProps["color"]}
                           />
                         </div>
                       </td>
@@ -217,10 +224,11 @@ export default function CandidaturePages() {
                         <Typography
                           variant="small"
                           color="blue-gray"
-                          className="font-normal"
+                          className="font-bold mb-1 text-center"
                         >
                           {date}
                         </Typography>
+                        <Progress value={50} color="gray" />
                       </td>
                       <td className={classes}>
                         <Tooltip content="Edit User">
