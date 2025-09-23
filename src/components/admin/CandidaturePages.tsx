@@ -29,7 +29,6 @@ import { LuSearch } from "react-icons/lu";
 import { SlOptions } from "react-icons/sl";
 import { IoClose } from "react-icons/io5";
 import { IoIosClose } from "react-icons/io";
-import { DiDreamweaver } from "react-icons/di";
 
 const TABS = [
   {
@@ -616,7 +615,7 @@ export function ContentOffres(){
 
 // Grahpes et stats
 export function RadarGraph(){
-  const [state, setState] = useState({
+  const [state] = useState({
             series: [{
               name: 'Score',
               data: [80, 50, 30, 40, 100, 50],
@@ -660,7 +659,7 @@ type props = {
 }
 
 export function RadialBarScore({score, title, height, width}: props){
-    const [state, setState] = useState({
+    const [state] = useState({
             series: [score],
             options: {
               plotOptions: {

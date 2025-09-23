@@ -82,7 +82,7 @@ export function AddOffre({open, handleChange}: {open: boolean, handleChange: () 
               <Input type="text" label="Titre de l'offre" id="titre" value={titre} onChange={(e) => setTitre(e.target.value)} required />
             </div>
             <div className="w-full">
-              <Select id="type" value={contrat} label="Type de contrat" onChange={(e) => setContrat(e)}>
+              <Select id="type" value={contrat} label="Type de contrat" onChange={(val) => val !== undefined && setContrat(val)}>
                 <Option value="default" disabled>-- Sélectionner --</Option>
                 <Option value="CDI">CDI</Option>
                 <Option value="CDD">CDD</Option>
@@ -102,7 +102,7 @@ export function AddOffre({open, handleChange}: {open: boolean, handleChange: () 
               </div>
             </div>
             <div className="w-full">
-              <Select id="type" value={poste} label="Poste disponible" onChange={(val) => setPoste(val)}>
+              <Select id="type" value={poste} label="Poste disponible" onChange={(val) => val !== undefined && setPoste(val)}>
                 <Option value="default" disabled>-- Sélectionner --</Option>
                 <Option value="1">Développeur</Option>
                 <Option value="2">Manager professionnel</Option>
@@ -111,7 +111,7 @@ export function AddOffre({open, handleChange}: {open: boolean, handleChange: () 
               </Select>
             </div>
             <div className="w-full">
-              <Select id="timework" label="Type de travail" value={typeTr} onChange={(val) => setTypeTr(val)}>
+              <Select id="timework" label="Type de travail" value={typeTr} onChange={(val) => val !== undefined && setTypeTr(val)}>
                 <Option value="default" disabled>-- Sélectionner --</Option>
                 <Option value="P">Partiel</Option>
                 <Option value="TP">Temps plein</Option>
