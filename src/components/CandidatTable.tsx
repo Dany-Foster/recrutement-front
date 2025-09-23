@@ -27,8 +27,6 @@ import {
   DialogFooter,
 } from "@material-tailwind/react";
 import { useState } from "react";
-import { PiLock } from "react-icons/pi";
-import { NavLink } from "react-router-dom";
 const TABS = [
   {
     label: "Tout",
@@ -282,10 +280,13 @@ export function ModalCardCandidat({open, handleOpen}: {open: boolean, handleOpen
           <IoIosClose className="h-5 w-5" />
         </IconButton>
       </DialogHeader>
-      <DialogBody className=" h-[500px] py-2 overflow-hidden">
+      <DialogBody className=" h-[600px] py-2 overflow-hidden">
         <TabCandidatInfo/>
       </DialogBody>
       <DialogFooter>
+        <Button variant="outlined" color="red" className="mr-1 ">
+          <span>Supprimer le candidat</span>
+        </Button>
         <Button variant="outlined" color="gray" className="mr-1">
           <span>Organiser un entretien</span>
         </Button>
@@ -307,17 +308,17 @@ export function TabCandidatInfo(){
       >
         <Tab value={"Info"} onClick={() => setActivate("Info")} className={activate === activate ? "text-gray-900" : ""}>Informations</Tab>
         <Tab value={"Stats"} onClick={() => setActivate("Stats")} className={activate === activate ? "text-gray-900" : ""}>Statistiques</Tab>
-        <Tab value={"Offres"} onClick={() => setActivate("Offres")} className={activate === activate ? "text-gray-900" : ""}>Offres</Tab>
+        <Tab value={"Offres"} onClick={() => setActivate("Offres")} className={activate === activate ? "text-gray-900" : ""}>Offre d'emploi postulé</Tab>
       </TabsHeader>
-      <TabsBody className="">
-        <TabPanel value={"Info"} className="overflow-y-auto h-[400px]">
+      <TabsBody className="h-[500px]">
+        <TabPanel value={"Info"} className="overflow-y-auto h-full [&::-webkit-scrollbar-thumb]:rounded-xl [&::-webkit-scrollbar-thumb]:bg-slate-300 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:rounded-xl [&::-webkit-scrollbar-track]:bg-slate-100 ">
           <ContentInfo/>
         </TabPanel>
-        <TabPanel value={"Stats"} className="overflow-y-auto h-[400px] p-0">
+        <TabPanel value={"Stats"} className="overflow-y-auto h-full [&::-webkit-scrollbar-thumb]:rounded-xl [&::-webkit-scrollbar-thumb]:bg-slate-300 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:rounded-xl [&::-webkit-scrollbar-track]:bg-slate-100 p-0">
           <ContentStatistiques/>
         </TabPanel>
         <TabPanel value={"Offres"}>
-          Contenu Offres
+          <ContentOffres/>
         </TabPanel>
       </TabsBody>
     </Tabs>
@@ -516,7 +517,23 @@ export function ContentStatistiques(){
 
 export function ContentOffres(){
   return (
-    <div>(-èQZSD BN.?Nqsé"'(- éQZSD</div>
+    <div className="w-full h-full flex flex-col gap-4">
+      <div className="w-full flex flex-col gap-2">
+        <Typography variant="h6" color="gray" className="text-[14px] font-semibold">Développeur Fullstack JS - 2015-2018</Typography>
+        <Typography variant="small" className="w-[500px] ml-2 text-[12px] font-normal text-justify">
+          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cumque consectetur dicta inventore recusandae eos! Perspiciatis assumenda voluptates eveniet quaerat facilis quas, minus praesentium nulla nam suscipit iusto fuga sunt veniam?
+        </Typography>
+      </div>
+      <Typography variant="h6" color="gray" className="text-[14px] font-semibold">CDI - Temps plein</Typography>
+      <div className="w-full flex flex-col gap-2">
+        <Typography variant="h6" color="gray" className="text-[14px] font-semibold"> Critères d'admission</Typography>
+        <ul className="list-disc ml-4 text-[12px]">
+          <li>Minimum 3 ans d'expérience en développement web</li>
+          <li>Maîtrise des technologies front-end (HTML, CSS, JavaScript, React)</li>
+          <li>Maîtrise des technologies back-end (Node.js, Express.js, MongoDB)</li>
+        </ul>
+      </div>
+    </div>
   )
 }
 

@@ -12,3 +12,4 @@ export {default as ChartReact} from "./ChartReact";
 export { default as AdminLayout} from "./admin/AdminLayout";
 export { default as RadarChart} from "./RadarChart";
 export { default as Evaluation} from "./EvaluationCandidat";
+export { default as InputTag} from "./InputTag";

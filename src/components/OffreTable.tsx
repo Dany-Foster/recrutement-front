@@ -16,8 +16,13 @@ import {
   IconButton,
   Tooltip,
   ChipProps,
+  Dialog,
 } from "@material-tailwind/react";
 import { MdOutlineCardTravel } from "react-icons/md";
+import { useState } from "react";
+import { IoIosClose } from "react-icons/io";
+import { IoBagRemove } from "react-icons/io5";
+import { DialogHeader } from "@material-tailwind/react";
 const TABS = [
 {
     label: "Tout",
@@ -39,6 +44,8 @@ const TABLE_HEAD = ["Offres", "Poste", "Status", "Nb candidat", ""];
 const TABLE_ROWS = [
   {
     name: "Développeur Javascript",
+    contrat: "CDI",
+    temps: "Temps plein",
     email: "laurent@creative-tim.com",
     job: "Développeur Frontend",
     online: "Cloturé",
@@ -47,6 +54,8 @@ const TABLE_ROWS = [
   },
   {
     name: "Recherche de designer UI/UX",
+    contrat: "CDI",
+    temps: "Temps plein",
     email: "michael@creative-tim.com",
     job: "Créateur Site Web",
     online: "Ouvert",
@@ -55,6 +64,8 @@ const TABLE_ROWS = [
   },
   {
     name: "Developeur fullstack",
+    contrat: "CDI",
+    temps: "Temps plein",
     email: "RichnoCrop@creative-tim.com",
     job: "Ingénieur Logiciel",
     online: "Cloturé",
@@ -63,7 +74,10 @@ const TABLE_ROWS = [
   },
 ];
  
-export default function SortableTable() {
+export default function SortableTable({actionOpen}: {actionOpen: () => void}) {
+  const [openDetails, setOpenDetails] = useState(false);
+  const handleOpenDetails = () => setOpenDetails(!openDetails);
+
   return (
     <Card className="h-full w-full">
       <CardHeader floated={false} shadow={false} className="rounded-none">
@@ -78,7 +92,7 @@ export default function SortableTable() {
             </Typography>
           </div>
           <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-            <Button className="flex items-center gap-3" size="sm" variant="gradient">
+            <Button className="flex items-center gap-3" size="sm" variant="gradient" onClick={actionOpen}>
               <MdOutlineCardTravel strokeWidth={2} className="h-4 w-4" /> AJouter une offre
             </Button>
           </div>
@@ -127,7 +141,7 @@ export default function SortableTable() {
           </thead>
           <tbody>
             {TABLE_ROWS.map(
-              ({  name , job, online, bnCandidat, bg }, index) => {
+              ({  name , job, online, bnCandidat, bg, contrat, temps }, index) => {
                 const isLast = index === TABLE_ROWS.length - 1;
                 const classes = isLast
                   ? "p-4"
@@ -137,13 +151,16 @@ export default function SortableTable() {
                   <tr key={name}>
                     <td className={classes}>
                       <div className="flex items-center gap-3">
-                        <div className="flex flex-col">
+                        <div className="flex flex-col gap-1">
                           <Typography
                             variant="small"
                             color="blue-gray"
                             className="font-normal"
                           >
                             {name}
+                          </Typography>
+                          <Typography variant="small" color="gray" className="text-[12px] font-normal">
+                            {contrat} - {temps}
                           </Typography>
                         </div>
                       </div>
@@ -180,7 +197,7 @@ export default function SortableTable() {
                     </td>
                     <td className={classes}>
                       <Tooltip content="Modifier l'offre">
-                        <IconButton variant="text">
+                        <IconButton variant="text" onClick={handleOpenDetails}>
                           <SlOptions className="h-4 w-4" />
                         </IconButton>
                       </Tooltip>
@@ -207,6 +224,31 @@ export default function SortableTable() {
           </Button>
         </div>
       </CardFooter>
+      <DialogOffre open={openDetails} handleChange={handleOpenDetails}/>
     </Card>
   );
+}
+
+
+export function DialogOffre({open, handleChange}: {open: boolean, handleChange: () => void}) {
+  return (
+    <Dialog size="lg" open={open} handler={handleChange}>
+      <DialogHeader className="w-full flex justify-between items-center">
+        <div className="flex flex-col gap-2">
+          <div className="w-full min-h-[35px] flex items-center gap-2">
+            <IoBagRemove size={35}/>
+            <Typography variant="h5" className="text-[18px] h-[18px] font-bold uppercase ">
+              Détails de l'offre d'emploi
+            </Typography>
+          </div>
+          <Typography variant="small" color="gray" className="text-[14px] ml-2">
+            Vous pouvez consulter les détails de l'offre d'emploi ici.
+          </Typography>
+        </div>
+        <IconButton variant="text" color="blue-gray" size="sm" onClick={handleChange} className="!absolute right-2.5 top-2.5">
+          <IoIosClose className="h-5 w-5"/>
+        </IconButton>
+      </DialogHeader>
+    </Dialog>
+  )
 }

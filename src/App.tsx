@@ -6,7 +6,7 @@ import OffreLayout from "./components/admin/OffreLayout";
 import CandidaturePages from "./components/admin/CandidaturePages";
 import { LoginCard } from "./components/Authentification/Login";
 import AnalyseLayout from "./components/admin/AnalyseLayout";
-import PostPages from "./components/admin/PostPages";
+import EntretienPages from "./components/admin/EntretienPages";
 
 const root = createBrowserRouter([
   {
@@ -35,7 +35,7 @@ const root = createBrowserRouter([
       },
       {
         path: "postes",
-        element: <PostPages/>,
+        element: <EntretienPages/>,
       },
     ],
   },

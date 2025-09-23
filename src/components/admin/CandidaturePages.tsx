@@ -18,13 +18,18 @@ import {
   DialogBody,
   ChipProps,
   Progress,
+  TabsBody,
+  DialogFooter,
+  TabPanel,
 } from "@material-tailwind/react";
 import { useState } from "react";
-
+import Chart  from "react-apexcharts";
 import { IoPersonAddSharp } from "react-icons/io5";
 import { LuSearch } from "react-icons/lu";
 import { SlOptions } from "react-icons/sl";
 import { IoClose } from "react-icons/io5";
+import { IoIosClose } from "react-icons/io";
+import { DiDreamweaver } from "react-icons/di";
 
 const TABS = [
   {
@@ -48,7 +53,7 @@ const TABS = [
     value: "rc"
   }
 ];
-const TABLE_HEAD = ["Candidat", "Poste", "Status", "Score", ""];
+const TABLE_HEAD = ["Rang", "Candidat", "Poste", "Status", "Score", ""];
 const TABLE_ROWS = [
 {
     img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg",
@@ -68,7 +73,7 @@ const TABLE_ROWS = [
     org: "Developer",
     online: "Entretien",
     date: "70%",
-    bg: "Yellow",
+    bg: "yellow",
   },
   {
     img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-1.jpg",
@@ -104,6 +109,9 @@ const TABLE_ROWS = [
 export default function CandidaturePages() {
   const [Open, setOpen] = useState(false);
   const HandleOpen = () => setOpen(!Open);
+
+  const [ShowDetail, setShowDetail] = useState(false)
+  const handleShowDetail = () => setShowDetail(!ShowDetail)
   return (
     <div className="mt-4 mx-2">
       <Card className="h-full w-full">
@@ -172,6 +180,17 @@ export default function CandidaturePages() {
                   return (
                     <tr key={name}>
                       <td className={classes}>
+                        <div className="">
+                          <Typography
+                            variant="small"
+                            color="blue-gray"
+                            className="font-semibold"
+                          >
+                            {index + 1}
+                          </Typography>
+                        </div>
+                      </td>
+                      <td className={classes}>
                         <div className="flex items-center gap-3">
                           <Avatar src={img} alt={name} size="sm" />
                           <div className="flex flex-col">
@@ -231,8 +250,8 @@ export default function CandidaturePages() {
                         <Progress value={50} color="gray" />
                       </td>
                       <td className={classes}>
-                        <Tooltip content="Edit User">
-                          <IconButton variant="text">
+                        <Tooltip content="Détails du candidat">
+                          <IconButton variant="text" onClick={handleShowDetail}>
                             <SlOptions className="h-4 w-4" />
                           </IconButton>
                         </Tooltip>
@@ -258,13 +277,12 @@ export default function CandidaturePages() {
           </div>
         </CardFooter>
       </Card>
+      <ModalCardCandidat open={ShowDetail} handleOpen={handleShowDetail}/>
     </div>
   );
 }
 
 export function AddCandidat({open, HandleOpen}: {open: boolean, HandleOpen: () => void}) {
-
-
   return (
     <Dialog size="sm" open={open} handler={HandleOpen} className="p-4">
       <DialogHeader className="relative m-0 block">
@@ -299,5 +317,379 @@ export function AddCandidat({open, HandleOpen}: {open: boolean, HandleOpen: () =
         </form>
       </DialogBody>
     </Dialog>
+  )
+}
+
+
+
+export function ModalCardCandidat({open, handleOpen}: {open: boolean, handleOpen: () => void}){
+  return (
+    <Dialog size="lg" open={open} handler={handleOpen}>
+      <DialogHeader className="relative">
+        <Typography variant="h5" color="blue-gray" className="">
+          Détails du Candidat
+        </Typography>
+        <IconButton
+          variant="text"
+          color="blue-gray"
+          onClick={handleOpen}
+          className="!absolute top-2.5 right-2.5"
+        >
+          <IoIosClose className="h-5 w-5" />
+        </IconButton>
+      </DialogHeader>
+      <DialogBody className=" h-[600px] py-2 overflow-hidden">
+        <TabCandidatInfo/>
+      </DialogBody>
+      <DialogFooter>
+        <Button variant="outlined" color="red" className="mr-1 ">
+          <span>Supprimer le candidat</span>
+        </Button>
+        <Button variant="outlined" color="gray" className="mr-1">
+          <span>Organiser un entretien</span>
+        </Button>
+      </DialogFooter>
+    </Dialog>
+  )
+}
+
+export function TabCandidatInfo(){
+  const [activate, setActivate] = useState("Info")
+  return (
+    <Tabs value={activate} className="w-full">
+      <TabsHeader
+        className="rounded-none border-b border-blue-gray-50 bg-transparent p-0"
+        indicatorProps={{
+          className:
+            "bg-transparent border-b-2 border-gray-900 shadow-none rounded-none",
+        }}
+      >
+        <Tab value={"Info"} onClick={() => setActivate("Info")} className={activate === activate ? "text-gray-900" : ""}>Informations</Tab>
+        <Tab value={"Stats"} onClick={() => setActivate("Stats")} className={activate === activate ? "text-gray-900" : ""}>Statistiques</Tab>
+        <Tab value={"Offres"} onClick={() => setActivate("Offres")} className={activate === activate ? "text-gray-900" : ""}>Offre d'emploi postulé</Tab>
+      </TabsHeader>
+      <TabsBody className="h-[500px]">
+        <TabPanel value={"Info"} className="overflow-y-auto h-full [&::-webkit-scrollbar-thumb]:rounded-xl [&::-webkit-scrollbar-thumb]:bg-slate-300 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:rounded-xl [&::-webkit-scrollbar-track]:bg-slate-100 ">
+          <ContentInfo/>
+        </TabPanel>
+        <TabPanel value={"Stats"} className="overflow-y-auto h-full [&::-webkit-scrollbar-thumb]:rounded-xl [&::-webkit-scrollbar-thumb]:bg-slate-300 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:rounded-xl [&::-webkit-scrollbar-track]:bg-slate-100 p-0">
+          <ContentStatistiques/>
+        </TabPanel>
+        <TabPanel value={"Offres"}>
+          <ContentOffres/>
+        </TabPanel>
+      </TabsBody>
+    </Tabs>
+  )
+}
+
+
+export function ContentInfo(){
+  return (
+    <div className="w-full flex gap-7 relative h-full">
+      <div className="w-1/3 flex flex-col gap-4 lg:sticky lg:top-0 lg:self-start">
+      {/* Avatar et nom */}
+        <Avatar src="https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg" alt="image" size="xxl"/>
+        <Typography variant="h5" color="black" className="w-1/2 text-wrap tex">
+          RAZANADRAKOTO Jean Michel
+        </Typography>
+        <Chip value="Manager" size="sm" className="text-[9px] text-center font-semibold max-w-[100px]"/>
+        {/* Contact */}
+        <div className="">
+          <Typography variant="small" color="black" className="text-[14px] font-semibold">
+            Contact :
+          </Typography>
+          <div className="ml-2">
+            <Typography variant="small" color="gray" className="text-[12px]">
+              +261 34 12 345 67
+            </Typography>
+            <Typography variant="small" color="gray" className="text-[12px]">
+              2BvK7@example.com
+            </Typography>
+          </div>
+        </div>
+        {/* Adresse */}
+        <div className="">
+          <Typography variant="small" color="black" className="text-[14px] font-semibold">
+            Adresse :
+          </Typography>
+          <div className="ml-2">
+            <Typography variant="small" color="gray" className="text-[12px]">
+             123 Rue Exemple, Antananarivo, Madagascar
+            </Typography>
+          </div>
+        </div>
+        {/* Langues */}
+        <div className="">
+          <Typography variant="small" color="black" className="text-[14px] font-semibold">
+            Langues :
+          </Typography>
+          <div className="ml-2 flex gap-1">
+            <Chip value="Français" size="sm" variant="outlined"  className="text-[9px] font-semibold"/>
+            <Chip value="Anglais" size="sm" variant="outlined" className="text-[9px] font-semibold"/>
+            <Chip value="Malagasy" size="sm" variant="outlined" className="text-[9px] font-semibold"/>
+          </div>
+        </div>
+        {/* Score du candidat */}
+        <div className="w-full">
+          <div className="mb-2 flex items-center justify-between gap-4">
+            <Typography variant="h6" color="blue-gray">
+              Score
+            </Typography>
+            <Typography variant="h6" color="blue-gray">
+              75%
+            </Typography>
+          </div>
+          <Progress value={75} className="ml-2"/>
+        </div>
+        {/* Lettre de motivation */}
+        <div className="">
+          <Typography variant="small" color="blue-gray" className="text-[14px] font-semibold">
+            Lettre de motivation :
+          </Typography>
+          <Button variant="text" size="sm">Consulter</Button>
+        </div>
+      </div>
+      {/* Informations avancés */}
+      <div className="w-2/3 flex flex-col gap-4">
+        {/* Profil */}
+        <div className="w-full flex flex-col gap-2">
+          <Typography variant="h6" color="blue-gray">
+            Profil :
+          </Typography>
+          <Typography variant="small" color="gray" className="ml-2 text-[12px] font-normal text-justify">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+          </Typography>
+        </div>
+        {/* Compétences */}
+        <div className="w-full flex flex-col gap-2">
+          <Typography variant="h6" color="blue-gray">
+            Compétences :
+          </Typography>
+          <div className="ml-2 flex gap-1">
+            <Chip value="HTML" size="sm" variant="outlined" className="text-[9px] font-semibold"/>
+            <Chip value="CSS" size="sm" variant="outlined" className="text-[9px] font-semibold"/>
+            <Chip value="React" size="sm" variant="outlined" className="text-[9px] font-semibold"/>
+          </div>
+        </div>
+        {/* Experiences */}
+        <div className="w-full flex flex-col gap-2">
+          <Typography variant="h6" color="blue-gray" className="">
+            Expériences :
+          </Typography>
+          <div className="ml-2 flex flex-wrap gap-4">
+            <div>
+              <Typography variant="h6" color="black" className="text-[12px] font-semibold">
+                Développeur Web - 2018-2020
+              </Typography>
+              <Typography variant="small" color="gray" className="text-[10px] font-normal">
+                Entreprise ABC, Antananarivo
+              </Typography>
+            </div>
+            <div>
+              <Typography variant="h6" color="black" className="text-[12px] font-semibold">
+                Développeur FullStack JS - 2015-2018
+              </Typography>
+              <Typography variant="small" color="gray" className="text-[10px] font-normal">
+                Entreprise ABC, Antananarivo
+              </Typography>
+            </div>
+            <div>
+              <Typography variant="h6" color="black" className="text-[12px] font-semibold">
+                Développeur Web - 2018-2020
+              </Typography>
+              <Typography variant="small" color="gray" className="text-[10px] font-normal">
+                Entreprise ABC, Antananarivo
+              </Typography>
+            </div>
+          </div>
+        </div>
+        {/* Education */}
+        <div className="w-full flex flex-col gap-2">
+          <Typography variant="h6" color="blue-gray" className="">
+            Formations :
+          </Typography>
+          <div className="ml-2 flex flex-wrap gap-4">
+            <div>
+              <Typography variant="h6" color="black" className="text-[12px] font-semibold">
+                Bachelor en Informatique - 2018-2020
+              </Typography>
+              <Typography variant="small" color="gray" className="text-[10px] font-normal">
+                Université XYZ, Antananarivo
+              </Typography>
+            </div>
+            <div>
+              <Typography variant="h6" color="black" className="text-[12px] font-semibold">
+                Bachelor en Informatique - 2018-2020
+              </Typography>
+              <Typography variant="small" color="gray" className="text-[10px] font-normal">
+                Université XYZ, Antananarivo
+              </Typography>
+            </div>
+          </div>
+        </div>
+        {/* Notes */}
+        <div className="w-full flex flex-col gap-2 rounded-md bg-orange-500 p-2 cursor-pointer">
+          <Typography variant="small" color="blue-gray" className="text-[14px] font-semibold">
+            Notes :
+          </Typography>
+          <Typography variant="small" color="white" className="ml-2 text-[12px] font-normal text-justify">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+          </Typography>
+        </div>
+      </div>
+
+    </div>
+  )
+}
+
+export function ContentStatistiques(){
+  return (
+    <div className="w-full h-full flex-col gap-4">
+      <div className="w-full flex justify-center items-center gap-2">
+        <RadarGraph/>
+        <RadialBarScore score={75} title="Score global"/>
+      </div>
+      <hr  className="my-2"/>
+      <div className="w-full flex justify-center">
+        <div className=" flex flex-col justify-center items-center gap-2">
+          <RadialBarScore score={60} title="Experiences" height={150} width={150}/>
+        </div>
+        <div className=" flex flex-col justify-center items-center gap-2">
+          <RadialBarScore score={50} title="Formations" height={150} width={150}/>
+        </div>
+        <div className=" flex flex-col justify-center items-center gap-2">
+          <RadialBarScore score={55} title="Compétences" height={150} width={150}/>
+        </div>
+        <div className=" flex flex-col justify-center items-center gap-2">
+          <RadialBarScore score={45} title="Langues" height={150} width={150}/>
+        </div>
+        <div className=" flex flex-col justify-center items-center gap-2">
+          <RadialBarScore score={20} title="Autres" height={150} width={150}/>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+
+export function ContentOffres(){
+  return (
+    <div className="w-full h-full flex flex-col gap-4">
+      <div className="w-full flex flex-col gap-1">
+        <Typography variant="h6" color="gray" className="text-[14px] font-semibold">Développeur Fullstack JS - 2015-2018</Typography>
+        <div className="w-1/2 flex gap-2 justify-start items-center ml-4">
+          <Typography variant="small" color="blue-gray" className="text-[12px] font-semibold">CDI - Temps plein</Typography>
+          <Typography variant="small" color="blue-gray" className="text-[12px] font-semibold">Antananarivo</Typography>
+        </div>
+        <Typography variant="small" className="w-[800px] ml-2 text-[12px] font-normal text-justify">
+          Lorem ipsum, dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur consequatur similique doloribus ea aperiam culpa! Quae deserunt cumque provident odit dolorem quidem beatae sunt fugit, aperiam voluptas voluptatem assumenda voluptatum. Cumque consectetur dicta inventore recusandae eos! Perspiciatis assumenda voluptates eveniet quaerat facilis quas, minus praesentium nulla nam suscipit iusto fuga sunt veniam?
+        </Typography>
+      </div>
+      <div className="w-full flex flex-col gap-2">
+        <Typography variant="h6" color="gray" className="text-[14px] font-semibold"> Critères d'admission sur chaque section</Typography>
+        <Typography variant="small" color="blue-gray" className="text-[12px] font-semibold ml-4">Expériences: </Typography>
+        <ul className="list-disc ml-10 text-[12px]">
+          <li>Minimum 3 ans d'expérience en développement web</li>
+          <li>Maîtrise des technologies front-end (HTML, CSS, JavaScript, React)</li>
+          <li>Maîtrise des technologies back-end (Node.js, Express.js, MongoDB)</li>
+        </ul>
+        <Typography variant="small" color="blue-gray" className="text-[12px] font-semibold ml-4">Langues: </Typography>
+        <ul className="list-disc ml-10 text-[12px]">
+          <li>Bon niveau en Langue Francaise </li>
+        </ul>
+        <Typography variant="small" color="blue-gray" className="text-[12px] font-semibold ml-4">Compétences: </Typography>
+        <ul className="list-disc ml-10 text-[12px]">
+          <li>Maitrise des Méthodologies de travail et conception</li>
+          <li>Bonne connaissance en framework React </li>
+          <li>Maîtrise des technologies back-end (Node.js, Express.js, MongoDB)</li>
+        </ul>
+        <Typography variant="small" color="blue-gray" className="text-[12px] font-semibold ml-4">Formations: </Typography>
+        <ul className="list-disc ml-10 text-[12px]">
+          <li>Possession du Master II </li>
+          <li>Bacc + 5 et Bacc + 3 minimum </li>
+        </ul>
+      </div>
+    </div>
+  )
+}
+
+// Grahpes et stats
+export function RadarGraph(){
+  const [state, setState] = useState({
+            series: [{
+              name: 'Score',
+              data: [80, 50, 30, 40, 100, 50],
+            }],
+            options: {
+              xaxis: {
+                categories: ['Experience', 'Compétences', 'Langues', 'Formation', 'Profil', 'Autres'],
+                labels: {
+                  style: {
+                    colors: ['#000000', '#000000', '#000000', '#000000', '#000000', '#000000'],
+                    fontSize: '12px',
+                    fontWeight: 'bold',
+                  },
+                },
+              },
+              chart: {
+                toolbar: {
+                  show: false
+                },
+                sparkline: {
+                  enabled: false
+                },
+                parentHeightOffset: 0,
+                offsetY: 0,
+                offsetX: 0,
+              }
+            },
+        });
+  return (
+    <div className="">
+      <Chart options={state.options} series={state.series} type="radar" height={350} width={400}  />
+    </div>
+  )
+}
+
+type props = {
+  score: number,
+  title?: string,
+  height?: number,
+  width?: number
+}
+
+export function RadialBarScore({score, title, height, width}: props){
+    const [state, setState] = useState({
+            series: [score],
+            options: {
+              plotOptions: {
+                radialBar: {
+                  hollow: {
+                    size: "70%",
+                  },
+                pie: {
+                  donut: {
+                    size: "70%",
+                    labels: {
+                      show: true,
+                      total: { show: true, label: "Score Global" },
+                    },
+                  },
+                },
+                  dataLabels: {
+                    name: {
+                      fontSize: '12px',
+                      fontweight: 'bold',
+                      color: '#000000',
+                    },
+                  }
+                },
+              },
+              labels: [`${title ? title : "Score"}`],
+            },
+        });
+  return (
+    <Chart options={state.options} series={state.series} type="radialBar" height={height} width={width}/>
   )
 }
