@@ -16,7 +16,7 @@ export const sidebarItems = [
   {
     id: 4,
     icon: "/assets/icons/analysis.svg",
-    label: "Analyses",
+    label: "Evaluation",
     href: "/dashboard/analyses",
   },
   {

@@ -307,8 +307,7 @@ export function TabOffreInfo(){
         <Tab value={"Info"} onClick={() => setActivate("Info")} className={activate === activate ? "text-gray-900" : ""}>Informations</Tab>
         <Tab value={"Modif"} onClick={() => setActivate("Modif")} className={activate === activate ? "text-gray-900" : ""}>Modifications</Tab>
         <Tab value={"Cands"} onClick={() => setActivate("Cands")} className={activate === activate ? "text-gray-900" : ""}>Candidats postulé</Tab>
-        <Tab value={"Stats"} onClick={() => setActivate("Stats")} className={activate === activate ? "text-gray-900" : ""}>Analyses</Tab>
-
+        {/* <Tab value={"Stats"} onClick={() => setActivate("Stats")} className={activate === activate ? "text-gray-900" : ""}>Analyses</Tab> */}
       </TabsHeader>
       <TabsBody className="h-[500px]">
         <TabPanel value={"Info"} className="overflow-y-auto h-full [&::-webkit-scrollbar-thumb]:rounded-xl [&::-webkit-scrollbar-thumb]:bg-slate-300 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:rounded-xl [&::-webkit-scrollbar-track]:bg-slate-100 ">
@@ -320,9 +319,9 @@ export function TabOffreInfo(){
         <TabPanel value={"Cands"} className="overflow-y-auto h-full [&::-webkit-scrollbar-thumb]:rounded-xl [&::-webkit-scrollbar-thumb]:bg-slate-300 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:rounded-xl [&::-webkit-scrollbar-track]:bg-slate-100 p-0">
           <CandidatPostule/>
         </TabPanel>
-        <TabPanel value={"Stats"} className="overflow-y-auto h-full [&::-webkit-scrollbar-thumb]:rounded-xl [&::-webkit-scrollbar-thumb]:bg-slate-300 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:rounded-xl [&::-webkit-scrollbar-track]:bg-slate-100 p-0">
-          <Typography>Analasyes</Typography>
-        </TabPanel>
+        {/* <TabPanel value={"Stats"} className="overflow-y-auto h-full [&::-webkit-scrollbar-thumb]:rounded-xl [&::-webkit-scrollbar-thumb]:bg-slate-300 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:rounded-xl [&::-webkit-scrollbar-track]:bg-slate-100 p-0">
+          <Statistiques/>
+        </TabPanel> */}
       </TabsBody>
     </Tabs>
   )
@@ -527,42 +526,78 @@ function CandidatPostule() {
       <Typography variant="small" color="gray" className="text-[14px] text-justify ml-4">
         Vous pouvez consulter la liste des candidats ayant postulé à cette offre d'emploi ici.
       </Typography>
-      <div className="w-full h-full flex fle-col gap-2 items-start justify-center">
-        <Card color="transparent" shadow={true} className="w-full border border-gray-200">
+      <div className="w-full h-full flex flex-col gap-2">
+        <Card color="transparent" shadow={true} className="w-full h-[100px] flex items-center border border-gray-200">
           <CardHeader
             color="transparent"
             floated={false}
             shadow={false}
-            className="w-full flex items-center gap-4 pb-8"
+            className="w-full h-full px-4 pb-4 flex items-center justify-between gap-4"
           >
-            <Avatar
-              src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
-              size="xl"
-              alt="cand"
-              className="h-16 w-16 object-cover"/>
-            <div className="flex w-full flex-col gap-1">
+            <div className="flex items-center gap-4">
+              <Avatar
+                src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+                size="lg"
+                alt="cand"
+                className=" object-cover"
+                />
               <div className="flex flex-col gap-1">
-                <Typography variant="h5" color="blue-gray">
-                  Jean Dupont
-                </Typography>
-                <div className="5 flex items-center justify-start gap-2">
-                  <Chip value="React" size="sm"  className="text-[10px]"/>
-                  <Chip value="Laravel" size="sm" className="text-[10px]" />
+                <div className=" flex flex-col gap-1">
+                  <Typography variant="h5" color="blue-gray">
+                    Jean Dupont
+                  </Typography>
+                  <Typography variant="small" color="gray" className="text-[12px] w-[100px] font-semibold flex items-center gap-2">
+                    Status: <Chip value="En attente" color="orange" size="sm" className="text-[10px] text-white"/>
+                  </Typography>
+                  <Typography variant="small" color="gray" className="text-[10px]">
+                    Postulé le: 2024-10-15 - il y a 5 jours
+                  </Typography>
                 </div>
-                <Typography variant="small" color="gray" className="text-[12px]">
-                  Postulé le: 2024-10-15 - il y a 5 jours
-                </Typography>
-                <Typography variant="small" color="gray" className="text-[12px] w-[100px] flex items-center gap-2">
-                  Status: <Chip value="En attente" color="orange" size="sm" className="text-[10px] text-white"/>
-                </Typography>
               </div>
             </div>
-            <div className="w-1/3 flex flex-col items-start justify-center gap-2">
+            <div className="flex flex-col items-start justify-center gap-2">
               <Typography variant="small" color="gray" className="text-[12px]">
-                Score: <span className="font-bold text-blue-gray-900">50%</span>
+                Score: <span className="font-bold text-blue-gray-900">50/100</span>
               </Typography>
-              <Progress value={50} size="sm" className="w-[100px]"/>
-              <Button size="sm">Voir le profil</Button>
+              <Progress value={50} size="sm" className=""/>
+              <Button size="sm" className="w-full">Voir le profil</Button>
+            </div>
+          </CardHeader>
+        </Card>
+      </div>
+    </div>
+  )
+}
+
+function Statistiques(){
+  return (
+    <div className="w-full h-full flex flex-col items-center justify-center gap-2 px-4 py-1 mt-4">
+      <Typography variant="h2" color="blue-gray" className="text-[25px] h-[18px] font-bold uppercase ">
+        Statistiques de l'offre d'emploi
+      </Typography>
+      <Typography variant="small" color="gray" className="text-[14px] text-justify ml-4">
+        Vous pouvez consulter les statistiques de cette offre d'emploi ici.
+      </Typography>
+      <div className="w-full h-full flex flex-col gap-2">
+        <Card color="transparent" shadow={true} className="w-full h-[500px] flex items-center border border-gray-200">
+          <CardHeader
+            color="transparent"
+            floated={false}
+            shadow={false}
+            className="w-full h-full px-4 pb-4 flex items-center justify-between gap-4"
+          >
+            <div className="flex items-center gap-4">
+              <div className="flex flex-col gap-1">
+                <div className=" flex flex-col gap-1">
+                  <Typography variant="h5" color="blue-gray">
+                    Nombre de candidatures reçues
+                  </Typography>
+                  <Typography variant="small" color="gray" className="text-[10px]">
+                    Candidatures ce mois-ci: <span className="font-bold text-blue-gray-900">30</span>
+                  </Typography>
+                </div>
+
+              </div>
             </div>
           </CardHeader>
         </Card>

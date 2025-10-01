@@ -7,11 +7,16 @@ import CandidaturePages from "./components/admin/CandidaturePages";
 import { LoginCard } from "./components/Authentification/Login";
 import AnalyseLayout from "./components/admin/AnalyseLayout";
 import EntretienPages from "./components/admin/EntretienPages";
+import Register from "./components/Authentification/Register";
 
 const root = createBrowserRouter([
   {
-    path: "/",
+    path: "/connexion",
     element: <LoginCard/>,
+  },
+  {
+    path: "/inscription",
+    element: <Register/>
   },
   {
     path: "/dashboard",

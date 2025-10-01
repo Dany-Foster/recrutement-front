@@ -285,9 +285,6 @@ import ApexCharts from "apexcharts";
               ]
             }],
             options: {
-              chart: {
-                id: 'area-datetime',
-              },
               dataLabels: {
                 enabled: false
               },

@@ -13,3 +13,6 @@ export { default as AdminLayout} from "./admin/AdminLayout";
 export { default as RadarChart} from "./RadarChart";
 export { default as Evaluation} from "./EvaluationCandidat";
 export { default as InputTag} from "./InputTag";
+export { default as Radialbar} from "./Radialbar";
+export { default as DonutChart} from "./DonutChart";
+export { default as DropZone } from "./DropZone";

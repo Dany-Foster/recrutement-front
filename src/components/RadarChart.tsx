@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Chart from 'react-apexcharts'
-export default function radarChart() {
+export default function RadarChart() {
     const [state] = useState({
       series: [14, 23, 21, 17, 15],
       options: {

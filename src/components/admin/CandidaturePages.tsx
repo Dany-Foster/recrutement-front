@@ -21,6 +21,8 @@ import {
   TabsBody,
   DialogFooter,
   TabPanel,
+  // Select,
+  // Option,
 } from "@material-tailwind/react";
 import { useState } from "react";
 import Chart  from "react-apexcharts";
@@ -29,6 +31,7 @@ import { LuSearch } from "react-icons/lu";
 import { SlOptions } from "react-icons/sl";
 import { IoClose } from "react-icons/io5";
 import { IoIosClose } from "react-icons/io";
+import { DropZone } from "..";
 
 const TABS = [
   {
@@ -282,6 +285,8 @@ export default function CandidaturePages() {
 }
 
 export function AddCandidat({open, HandleOpen}: {open: boolean, HandleOpen: () => void}) {
+  const [file, setFile] = useState<File[]>([]);
+
   return (
     <Dialog size="sm" open={open} handler={HandleOpen} className="p-4">
       <DialogHeader className="relative m-0 block">
@@ -303,16 +308,10 @@ export function AddCandidat({open, HandleOpen}: {open: boolean, HandleOpen: () =
       </DialogHeader>
       <DialogBody className="space-y-4">
         <form>
-          <input type="file" id="file" className="hidden" />
-          <div className="w-full flex flex-col mb-4 cursor-pointer items-center justify-center h-[150px] border-2 border-dashed border-gray-400 rounded-lg">
-            <Typography>
-              Insérer un fichier de format
-            </Typography>
-            <Typography variant="small" className="text-[12px] font-semibold">
-              .pdf .word .csv
-            </Typography>
+          <div className="flex flex-col gap-2">
+            <DropZone onFiles={(files) => setFile((prev) => [...prev, ...files])} fichier={file}   accept=".pdf" multiple={false}/>
+            <Button>Ajouter la candidature</Button>
           </div>
-          <Button variant="gradient" className="w-full">Valider</Button>
         </form>
       </DialogBody>
     </Dialog>

@@ -22,6 +22,7 @@ export function LoginCard() {
           <Typography variant="h3" color="white">
             Connexion
           </Typography>
+          <Typography>Heureux de vous revoir !</Typography>
         </CardHeader>
         <CardBody className="flex flex-col gap-4">
           <Input label="Email" value={email} onChange={(e) => setEmail(e.target.value)} size="lg" />
@@ -35,7 +36,7 @@ export function LoginCard() {
             Vous n'avez pas de compte?
             <Typography
               as="a"
-              href="#signup"
+              href="/inscription"
               variant="small"
               color="blue-gray"
               className="ml-1 font-bold"
