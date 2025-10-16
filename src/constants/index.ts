@@ -23,7 +23,7 @@ export const sidebarItems = [
     id: 5,
     icon: "/assets/icons/job.svg",
     label: "Entretiens",
-    href: "/dashboard/postes",
+    href: "/dashboard/entretiens",
   },
   {
     id: 7,

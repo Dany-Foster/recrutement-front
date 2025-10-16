@@ -1,10 +1,10 @@
 import { MdLogout } from "react-icons/md";
 // import { useState } from "react";
-import SearchBar from "./SearchBar";
+import { Button } from "@material-tailwind/react";
+import { useContext } from "react";
 import BoutonMenu from "./BoutonMenu";
-
-
-
+import AuthContext from "./Hooks/Authentification.context";
+import SearchBar from "./SearchBar";
 
 export default function NavItems({
   handleClick,
@@ -12,46 +12,41 @@ export default function NavItems({
   handleClick?: () => void;
 }) {
   const user = {
-    name: "Vanilla Corp",
-    Email: "VanillaCorp@gmail.com",
     logo: "/assets/icons/logo2.svg",
   };
 
+  const { data } = useContext(AuthContext);
+
   return (
-    <section
-      className="flex flex-col gap-[2px] h-full"
-      onClick={handleClick}
-    >
-    <div className="flex flex-row items-center gap-2.5 py-1">
+    <section className="flex flex-col gap-[2px] h-full" onClick={handleClick}>
+      <div className="flex flex-row items-center gap-2.5 py-1">
         <img
-        src={user?.logo}
-        alt={user?.name}
-        className="aspect-square size-[30px]"
+          src={user?.logo}
+          alt={data?.user?.name}
+          className="aspect-square size-[30px]"
         />
         <article className="flex flex-col justify-between !gap-[2px] max-w-full">
-        <h2 className="text-xs md:text-[14px] font-bold text-dark-200 truncate">
-            {user?.name}
-        </h2>
-        <p className="text-gray-500 text-xs md:text-[12px] font-normal truncate">
-            {user?.Email}
-        </p>
+          <h2 className="text-xs md:text-[14px] font-bold text-dark-200 truncate">
+            {data?.entreprise?.nom}
+          </h2>
+          <p className="text-gray-500 text-xs md:text-[12px] font-normal truncate">
+            {data?.entreprise?.email_E}
+          </p>
         </article>
-    </div>
+      </div>
       <hr className="bg-[#D9D9D9] size-[1.5px] border border-none w-full" />
-      <div
-        className="flex flex-col justify-between gap-1 h-full pt-4"
-      >
+      <div className="flex flex-col justify-between gap-1 h-full pt-4">
         <div className="w-full flex flex-col gap-4">
           <SearchBar />
           <BoutonMenu />
         </div>
-        <footer className="border w-full py-2 px-6 rounded-md bg-[#000] flex justify-between items-center gap-2 cursor-pointer">
-          <h2 className="text-[14px] font-semibold text-white">
-            Se déconnecter
-          </h2>
-          <button className="text-white">
-            <MdLogout />
-          </button>
+        <footer className="border w-full rounded-md bg-[#000]  cursor-pointer">
+          <Button className="w-full text-white flex justify-between items-center gap-2">
+            <h2 className="text-[12px] font-semibold text-white">
+              Se déconnecter
+            </h2>
+            <MdLogout size={25} />
+          </Button>
         </footer>
       </div>
     </section>

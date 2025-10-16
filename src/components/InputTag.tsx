@@ -2,7 +2,6 @@ import React, { useCallback, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
 
-
 /**
  * TagInput (a.k.a chips/token input)
  * - Type text and press Enter or "," to create a tag
@@ -20,7 +19,7 @@ function TagInput({
   separators = ["Enter", ","],
   maxTags = 0, // 0 = unlimited
   allowDuplicates = false,
-  validate  = () => true || false, // (tag: string) => boolean | string (error message)
+  validate = () => true || false, // (tag: string) => boolean | string (error message)
   className = "",
 }) {
   const [input, setInput] = useState("");
@@ -29,7 +28,10 @@ function TagInput({
 
   const tags = value ?? [];
 
-  const normalized = useCallback((raw: string) => raw.trim().replace(/\s+/g, " "), []);
+  const normalized = useCallback(
+    (raw: string) => raw.trim().replace(/\s+/g, " "),
+    []
+  );
 
   const addTag = useCallback(
     (raw: string) => {
@@ -41,7 +43,10 @@ function TagInput({
         return;
       }
 
-      if (!allowDuplicates && tags.some((x: string) => x.toLowerCase() === t.toLowerCase())) {
+      if (
+        !allowDuplicates &&
+        tags.some((x: string) => x.toLowerCase() === t.toLowerCase())
+      ) {
         setError("Déjà ajouté");
         return;
       }
@@ -124,7 +129,10 @@ function TagInput({
 
   return (
     <div className="w-full">
-      <div className={containerClasses} onClick={() => inputRef.current?.focus()}>
+      <div
+        className={containerClasses}
+        onClick={() => inputRef.current?.focus()}
+      >
         <AnimatePresence initial={false}>
           {tags.map((t, i) => (
             <motion.span
@@ -169,7 +177,9 @@ function TagInput({
       <div className="mt-1 flex items-center justify-between text-[11px]">
         <span className="text-red-500 h-4">{error}</span>
         {maxTags ? (
-          <span className="text-gray-500">{tags.length}/{maxTags}</span>
+          <span className="text-gray-500">
+            {tags.length}/{maxTags}
+          </span>
         ) : null}
       </div>
     </div>
@@ -177,33 +187,54 @@ function TagInput({
 }
 
 // Example: Drop-in usage
-export default function Demo({ placeholder, critere, setCritere }: { placeholder?: string, critere: string[], setCritere: (crit: string[]) => void }) {
-  const [tags, setTags] = useState([]);
+export default function Demo({
+  placeholder,
+  critere,
+  setCritere,
+}: {
+  placeholder?: string;
+  critere: string[];
+  setCritere: (crit: string[]) => void;
+}) {
   // optional: simple validator example (min length)
-  const validate = useCallback((t) => (t.length < 2 ? "Au moins 2 caractères" : true), []);
+  const validate = useCallback(
+    (t: string) => (t.length < 2 ? "Au moins 2 caractères" : true),
+    []
+  );
 
   return (
-      <div className="mt-2">
-        <TagInput
-          value={critere}
-          onChange={setCritere}
-          placeholder={placeholder}
-          maxTags={12}
-          className=""
-          validate={validate}
-        />
-      </div>
-
+    <div className="mt-2">
+      <TagInput
+        value={critere}
+        onChange={setCritere}
+        placeholder={placeholder}
+        maxTags={12}
+        className=""
+        validate={validate}
+      />
+    </div>
   );
 }
 
 function Tips() {
   return (
     <ul className="mt-6 space-y-2 text-[12px] text-gray-600 dark:text-gray-300 list-disc pl-5">
-      <li>Appuie sur <kbd className="px-1 border rounded">Entrée</kbd> ou tape une virgule pour créer un tag.</li>
-      <li><kbd className="px-1 border rounded">Backspace</kbd> supprime le dernier tag si l’input est vide.</li>
-      <li>Colle plusieurs éléments (séparés par virgules, points-virgules ou retours à la ligne) pour les ajouter d’un coup.</li>
-      <li>Personnalise l’animation dans les props <code>initial</code>/<code>animate</code>/<code>exit</code> de <code>motion.span</code>.</li>
+      <li>
+        Appuie sur <kbd className="px-1 border rounded">Entrée</kbd> ou tape une
+        virgule pour créer un tag.
+      </li>
+      <li>
+        <kbd className="px-1 border rounded">Backspace</kbd> supprime le dernier
+        tag si l’input est vide.
+      </li>
+      <li>
+        Colle plusieurs éléments (séparés par virgules, points-virgules ou
+        retours à la ligne) pour les ajouter d’un coup.
+      </li>
+      <li>
+        Personnalise l’animation dans les props <code>initial</code>/
+        <code>animate</code>/<code>exit</code> de <code>motion.span</code>.
+      </li>
     </ul>
   );
 }

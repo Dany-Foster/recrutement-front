@@ -1,13 +1,13 @@
 import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
 import dayjs from "dayjs";
+import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
 export const formatDate = (dateString: string): string => {
-  return dayjs(dateString).format("MMMM DD, YYYY");
+  return dayjs(dateString).format("DD MMMM, YYYY");
 };
 
 export function parseMarkdownToJson(markdownText: string): unknown | null {
