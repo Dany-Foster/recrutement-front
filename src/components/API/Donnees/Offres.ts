@@ -1,6 +1,10 @@
 import axios from "axios";
 import { DataOffre } from "./type";
 
+type Error = {
+  message: string;
+};
+
 const CreateOffre = async (offre: DataOffre) => {
   try {
     await axios.post("/api/admin/offres", offre).then((res) => {
@@ -25,4 +29,19 @@ const UpdateOffre = async (offre: DataOffre, id: string) => {
   }
 };
 
-export { CreateOffre, UpdateOffre };
+const DeleteOffre = async (
+  id: string
+): Promise<boolean | string[] | unknown> => {
+  try {
+    await axios.delete(`/api/admin/offres/${id}`).then((res) => {
+      console.log(res.status);
+      if (res.status == 200) {
+        return true;
+      }
+    });
+  } catch (error: Error | unknown) {
+    return error;
+  }
+};
+
+export { CreateOffre, DeleteOffre, UpdateOffre };

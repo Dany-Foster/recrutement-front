@@ -56,9 +56,11 @@ export default function LoginCard() {
         console.log(err);
         if (err.response && err.response.status === 422) {
           setError(err.response.data.errors);
+          setMdp("");
           setLoading(false);
         } else if (err.response && err.response.status === 401) {
           setError({ message: err.response.data.error });
+          setMdp("");
           setLoading(false);
         }
       });
@@ -85,6 +87,7 @@ export default function LoginCard() {
   }, []);
 
   return (
+    // <div className="flex justify-center items-center h-screen bg-gray-100">
     <div className="flex justify-center items-center h-screen bg-gray-100">
       <Card className="w-[400px]">
         <form action="" onSubmit={handleSubmit}>

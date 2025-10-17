@@ -15,10 +15,10 @@ import {
 import { useContext, useState } from "react";
 import { IoIosClose } from "react-icons/io";
 import { IoBagRemove } from "react-icons/io5";
-import { InputTag } from ".";
-import { CreateOffre } from "./API/Donnees/Offres";
-import AuthContext from "./Hooks/Authentification.context";
-import { Offres, Poste } from "./Hooks/type";
+import { InputTag } from "..";
+import { CreateOffre } from "../API/Donnees/Offres";
+import AuthContext from "../Hooks/Authentification.context";
+import { Poste } from "../Hooks/type";
 
 export default function AddOffre({
   open,
@@ -235,7 +235,7 @@ export default function AddOffre({
         </DialogBody>
         <DialogFooter>
           <Button
-            className="mr-1 flex flex-col items-center justify-center gap-2"
+            className="mr-1 flex items-center justify-center gap-2"
             type="submit"
           >
             {loader && <Spinner className="h-4 w-4" />}

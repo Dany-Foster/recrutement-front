@@ -12,12 +12,12 @@ export const initialState: DataState = {
 };
 // L’état du reducer
 export interface DataState {
-  user?: User | [];
-  entreprise?: Entreprise | [];
-  candidats?: Candidats[] | [];
+  user: User | [];
+  entreprise: Entreprise | [];
+  candidats: Candidats[] | [];
   offres: Offres[] | [];
   entretiens?: [];
-  sections?: Sections[] | [];
+  sections: Sections[] | [];
   poste: Poste[] | [];
   errors?: [];
   loading?: boolean;
@@ -74,6 +74,7 @@ export interface criteres {
 export interface user {
   id: string;
   name: string;
+  role: string;
 }
 
 export interface Sections {
@@ -106,4 +107,5 @@ export type DataACTION =
   | { type: "GET_OFFRES"; payload: { offres: Offres[] } }
   | { type: "GET_SECTION"; payload: { sections: Sections[] } }
   | { type: "ADD_POSTE"; payload: { poste: Poste } }
-  | { type: "UPDATE_OFFRE"; payload: { offre: Offres } };
+  | { type: "UPDATE_OFFRE"; payload: { offre: Offres } }
+  | { type: "DELETE_OFFRE"; payload: { id: string } };

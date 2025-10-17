@@ -1,9 +1,8 @@
 import { MdLogout } from "react-icons/md";
 // import { useState } from "react";
 import { Button } from "@material-tailwind/react";
-import { useContext } from "react";
 import BoutonMenu from "./BoutonMenu";
-import AuthContext from "./Hooks/Authentification.context";
+import { useData } from "./Hooks/useData";
 import SearchBar from "./SearchBar";
 
 export default function NavItems({
@@ -15,7 +14,18 @@ export default function NavItems({
     logo: "/assets/icons/logo2.svg",
   };
 
-  const { data } = useContext(AuthContext);
+  const { data, logout, dispatch } = useData();
+
+  const Log = () => {
+    const Interval = setInterval(() => {
+      dispatch({ type: "loading" });
+    }, 1000);
+
+    return () => {
+      clearInterval(Interval);
+      logout();
+    };
+  };
 
   return (
     <section className="flex flex-col gap-[2px] h-full" onClick={handleClick}>
@@ -41,7 +51,10 @@ export default function NavItems({
           <BoutonMenu />
         </div>
         <footer className="border w-full rounded-md bg-[#000]  cursor-pointer">
-          <Button className="w-full text-white flex justify-between items-center gap-2">
+          <Button
+            className="w-full text-white flex justify-between items-center gap-2"
+            onClick={logout}
+          >
             <h2 className="text-[12px] font-semibold text-white">
               Se déconnecter
             </h2>

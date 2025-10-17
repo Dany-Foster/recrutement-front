@@ -24,8 +24,8 @@ export default function AddPoste() {
     const donnee = {
       poste: poste,
       desc_post: desc,
-      user_id: data.user.id,
-      entreprise_id: data.entreprise.id,
+      user_id: data.user?.id,
+      entreprise_id: data ? data.entreprise?.id : "",
     };
 
     // TODO: Replace with your API call to add a poste, e.g.:

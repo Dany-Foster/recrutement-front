@@ -1,9 +1,11 @@
 import {
   ADD_OFFRE,
   ADD_POSTE,
+  DELETE_OFFRE,
   GET_OFFRES,
   GET_SECTION,
   LOADING_PAGE,
+  LOGOUT,
   PRECHARGEMENT,
   UPDATE_OFFRE,
 } from "./action.type.ts";
@@ -16,6 +18,17 @@ function DataReducer(state: DataState, action: DataACTION): DataState {
       return {
         ...state,
         loading: true,
+      };
+
+    case LOGOUT:
+      return {
+        ...state,
+        user: [],
+        entreprise: [],
+        sections: [],
+        poste: [],
+        offres: [],
+        loading: false,
       };
 
     case PRECHARGEMENT:
@@ -58,6 +71,12 @@ function DataReducer(state: DataState, action: DataACTION): DataState {
             return offre;
           }
         }),
+      };
+
+    case DELETE_OFFRE:
+      return {
+        ...state,
+        offres: state.offres.filter((offre) => offre.id !== action.payload.id),
       };
     default:
       return state;
