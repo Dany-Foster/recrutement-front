@@ -20,6 +20,8 @@ export interface DataState {
   sections: Sections[] | [];
   poste: Poste[] | [];
   errors?: [];
+  candidat?: Candidats[];
+  entretien: Entretiens[] | [];
   loading?: boolean;
 }
 
@@ -42,14 +44,18 @@ export interface Entreprise {
 }
 
 export interface Candidats {
-  id: number;
-  nom: string;
-  prenom: string;
-  profil: string;
-  email: string;
-  Annee: string;
-  CV: string;
-  Exp: Experiences[];
+  id?: number;
+  nom?: string;
+  prenom?: string;
+  profil?: string;
+  email?: string;
+  Annee?: string;
+  CV?: string;
+  Score_Glob?: string;
+  Exp?: Experiences[];
+  competences?: Competences[];
+  formations?: Formations[];
+  langue?: Langue[];
 }
 
 export interface Experiences {
@@ -58,8 +64,6 @@ export interface Experiences {
   date_debut: string;
   date_fin: string;
   missions: Missions[];
-  competences: Competences[];
-  formations: Formations[];
 }
 
 export interface Missions {
@@ -71,17 +75,25 @@ export interface Competences {
   competence: string;
   categorie?: string;
   niveau?: string;
+  score: string;
 }
 
 export interface Formations {
   Etablissement: string;
   Diplome: string;
   Date?: string;
+  score: string;
 }
 
 export interface Langue {
   langue?: string;
   niveau?: string;
+  score: string;
+}
+
+export interface Contact {
+  contact: string;
+  type: string;
 }
 
 export interface Offres {
@@ -119,6 +131,13 @@ export interface Poste {
   id: string;
   poste: string;
   desc_post: string;
+}
+
+export interface Entretiens {
+  id: string;
+  date: string;
+  lieu: string;
+  heure: string;
 }
 
 // Les actions possibles

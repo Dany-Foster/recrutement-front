@@ -1,7 +1,7 @@
 export interface DataCandidat {
   file: File | null;
   user: string | null;
-  offre: string | null;
+  offre_id: string | null;
 }
 
 export interface DataOffre {

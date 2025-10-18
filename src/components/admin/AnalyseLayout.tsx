@@ -10,26 +10,29 @@ import { FormEvent, useContext, useState } from "react";
 import { DropZone } from "..";
 import AnalyseResult from "../AnalysResult";
 import { CreateCandidat } from "../API/Donnees/Candidats";
+import { DataCandidat } from "../API/Donnees/type";
 import AuthContext from "../Hooks/Authentification.context";
-import { Offres } from "../Hooks/type";
+import { Candidats, Offres } from "../Hooks/type";
 
 const AnalyseLayout = () => {
   const { data } = useContext(AuthContext);
   const [file, setFile] = useState<File | null>(null);
   const [offre, setOffre] = useState("");
-  const [candidat, setCandidat] = useState([]);
+  const [candidat, setCandidat] = useState<Candidats | null>(null);
 
   // Appel au données dans le contexte
   const handleAddCandidat = (e: FormEvent) => {
     e.preventDefault();
     const user = data.user.id;
 
-    const Candidat = {
+    const Candidat: DataCandidat = {
       file: file,
       user: user,
       offre_id: offre,
     };
-    CreateCandidat(Candidat);
+    CreateCandidat(Candidat).then((res) => {
+      setCandidat(res ? res : []);
+    });
   };
   return (
     <div className="w-full px-2 lg:px-4 mt-4 flex flex-col gap-2">
@@ -71,28 +74,7 @@ const AnalyseLayout = () => {
           </div>
         </form>
         <div className="w-1/2 h-[615px]">
-          <AnalyseResult
-            candidat={{
-              nom: "Rakotobe Alan",
-              poste: "Développeur Front-End",
-              profil:
-                "Développeur de 23 ans spécialisé en frontend avec Vue/Nuxt JS, maîtrisant également Symfony et Laravel pour le backend.",
-              score: 87,
-              pertinence: "Élevée",
-              competences: [
-                { nom: "React / Vue.js", correspondance: 90 },
-                { nom: "JavaScript", correspondance: 85 },
-                { nom: "UX/UI Design", correspondance: 70 },
-              ],
-              experiences: [
-                { entreprise: "Groupe Viseo", poste: "Développeur Web" },
-                {
-                  entreprise: "Vaniala Nature & Spa",
-                  poste: "Développeur React JS Stagiaire",
-                },
-              ],
-            }}
-          />
+          <AnalyseResult candidat={candidat} />
         </div>
       </div>
     </div>
