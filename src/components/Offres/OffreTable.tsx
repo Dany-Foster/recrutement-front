@@ -85,28 +85,26 @@ export default function SortableTable({
     }
   };
 
-  const offre = data.offres;
-
   const filterTable = useMemo(() => {
     switch (value) {
       case "T":
-        return offre.filter((offre: Offres) => {
+        return data.offres.filter((offre: Offres) => {
           return offre;
         });
       case "O":
-        return offre.filter((offre: Offres) => {
+        return data.offres.filter((offre: Offres) => {
           if (cloturation(offre.date_clot ? offre.date_clot : "") === "Ouvert")
             return offre;
         });
       case "F":
-        return offre.filter((offre: Offres) => {
+        return data.offres.filter((offre: Offres) => {
           if (cloturation(offre.date_clot ? offre.date_clot : "") === "Fermé")
             return offre;
         });
       default:
-        return offre;
+        return data.offres;
     }
-  }, [offre, value]);
+  }, [data, value]);
 
   const searchTable = useMemo(() => {
     return filterTable.filter((offre: Offres) => {
@@ -230,31 +228,25 @@ export default function SortableTable({
                       </div>
                     </td>
                     <td className={classes}>
+                      <div className="w-max">
+                        <Typography
+                          variant="small"
+                          color="gray"
+                          className="text-[12px] font-normal flex gap-2"
+                        >
+                          <Chip value={donnee.contrat} size="sm" /> -
+                          <strong>{donnee.temps}</strong>
+                        </Typography>
+                      </div>
+                    </td>
+                    <td className={classes}>
                       <div className="flex flex-col">
                         <Typography
                           variant="small"
                           color="blue-gray"
                           className="font-normal"
                         >
-                          <Chip
-                            value={formatDate(
-                              donnee.date_clot ? donnee.date_clot : ""
-                            )}
-                            size="sm"
-                            variant="gradient"
-                            className="text-center"
-                          />
-                        </Typography>
-                      </div>
-                    </td>
-                    <td className={classes}>
-                      <div className="w-max">
-                        <Typography
-                          variant="small"
-                          color="gray"
-                          className="text-[12px] font-normal"
-                        >
-                          {donnee.contrat} - <strong>{donnee.temps}</strong>
+                          {formatDate(donnee.date_clot ? donnee.date_clot : "")}
                         </Typography>
                       </div>
                     </td>

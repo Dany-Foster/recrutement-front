@@ -49,6 +49,39 @@ export interface Candidats {
   email: string;
   Annee: string;
   CV: string;
+  Exp: Experiences[];
+}
+
+export interface Experiences {
+  poste: string;
+  entreprise: string;
+  date_debut: string;
+  date_fin: string;
+  missions: Missions[];
+  competences: Competences[];
+  formations: Formations[];
+}
+
+export interface Missions {
+  titre?: string;
+  tache: string[];
+}
+
+export interface Competences {
+  competence: string;
+  categorie?: string;
+  niveau?: string;
+}
+
+export interface Formations {
+  Etablissement: string;
+  Diplome: string;
+  Date?: string;
+}
+
+export interface Langue {
+  langue?: string;
+  niveau?: string;
 }
 
 export interface Offres {

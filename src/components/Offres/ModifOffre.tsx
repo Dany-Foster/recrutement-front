@@ -115,6 +115,7 @@ export default function ModifOffre() {
               val !== undefined &&
               setSelectOffre({ ...selectOffre, contrat: val })
             }
+            className="flex flex-col justify-center items-start gap-4"
           >
             <Option value="default" disabled>
               -- Sélectionner --

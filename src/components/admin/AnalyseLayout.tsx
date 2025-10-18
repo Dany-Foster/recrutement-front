@@ -17,6 +17,7 @@ const AnalyseLayout = () => {
   const { data } = useContext(AuthContext);
   const [file, setFile] = useState<File | null>(null);
   const [offre, setOffre] = useState("");
+  const [candidat, setCandidat] = useState([]);
 
   // Appel au données dans le contexte
   const handleAddCandidat = (e: FormEvent) => {

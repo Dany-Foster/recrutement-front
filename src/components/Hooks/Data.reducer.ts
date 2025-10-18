@@ -66,6 +66,7 @@ function DataReducer(state: DataState, action: DataACTION): DataState {
         ...state,
         offres: state.offres.map((offre) => {
           if (offre.id === action.payload.offre.id) {
+            console.log(action.payload.offre.id);
             return action.payload.offre;
           } else {
             return offre;

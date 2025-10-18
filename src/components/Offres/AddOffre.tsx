@@ -169,11 +169,8 @@ export default function AddOffre({
                   label="Poste disponible"
                   onChange={(val) => val !== undefined && setPoste(val)}
                 >
-                  {/* <Option value="default" disabled>
-                    -- Sélectionner --
-                  </Option> */}
                   {data.poste.map((poste: Poste, index: number) => (
-                    <Option key={index} value={poste.id}>
+                    <Option key={index} value={String(poste.id)}>
                       {poste.poste}
                     </Option>
                   ))}

@@ -45,17 +45,17 @@ function AuthentificationProvider({ children }: { children: React.ReactNode }) {
 
   const logout = () => {
     dispatch({ type: "loading" });
-    localStorage.removeItem("auth_id");
-    localStorage.removeItem("auth_name");
-    localStorage.removeItem("auth_mail");
-    localStorage.removeItem("auth_role");
-    localStorage.removeItem("auth_token");
-    localStorage.removeItem("auth_Entreprise");
+
     LOGOUT(data.user?.id)
       .then((res) => {
         if (res.status == 200) {
+          localStorage.removeItem("auth_id");
+          localStorage.removeItem("auth_name");
+          localStorage.removeItem("auth_mail");
+          localStorage.removeItem("auth_role");
+          localStorage.removeItem("auth_token");
+          localStorage.removeItem("auth_Entreprise");
           setAuthenticate(false);
-          dispatch({ type: "LOGOUT" });
         } else {
           console.log(res);
         }
@@ -85,7 +85,7 @@ function AuthentificationProvider({ children }: { children: React.ReactNode }) {
 
   const HandleUpdateOffre = (handleChange?: () => void) => {
     if (selectOffre) {
-      const dataState = {
+      const dataUpdate = {
         titre: selectOffre.titre || "",
         desc_ofr: selectOffre.desc_ofr || "",
         date_clot: selectOffre.date_clot || "",
@@ -99,14 +99,12 @@ function AuthentificationProvider({ children }: { children: React.ReactNode }) {
         critere: selectOffre.criteres,
       };
 
-      UpdateOffre(dataState, selectOffre.id || "")
-        .then((res) => {
-          if (res) {
-            dispatch({
-              type: "UPDATE_OFFRE",
-              payload: { offre: selectOffre },
-            });
-          }
+      UpdateOffre(dataUpdate, selectOffre.id || "")
+        .then(() => {
+          dispatch({
+            type: "UPDATE_OFFRE",
+            payload: { offre: selectOffre },
+          });
         })
         .catch((err) => {
           console.log(err);
