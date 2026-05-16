@@ -4,6 +4,20 @@ export interface DataCandidat {
   offre_id: string | null;
 }
 
+export interface DataUtilisateur {
+  name: string;
+  email: string;
+  password: string;
+  contacts: Contacts[];
+  role: string | null;
+  entreprise_id: string | null;
+  password_confirmation: string | null;
+}
+
+export interface Contacts {
+  contact: string | null;
+}
+
 export interface DataOffre {
   titre: string | null;
   desc_ofr: string | null;

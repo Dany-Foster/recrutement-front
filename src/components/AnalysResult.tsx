@@ -44,9 +44,6 @@ const AnalyseResult = ({ candidat }: { candidat: Candidats }) => {
                 <Typography variant="h6" color="blue-gray">
                   {candidat.nom}
                 </Typography>
-                <Typography variant="small" color="gray">
-                  {candidat.nom} {candidat.prenom}
-                </Typography>
               </div>
             </div>
             <div className="mt-2">

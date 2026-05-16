@@ -11,13 +11,14 @@ import LoginCard from "./components/Authentification/Login";
 import Register from "./components/Authentification/Register";
 import { AuthentificationProvider } from "./components/Hooks/Authentification.context.tsx";
 
-axios.defaults.baseURL = "http://127.0.0.1:8002/";
+axios.defaults.baseURL = "http://127.0.0.1:8000/";
 axios.defaults.headers.post["Content-Type"] = "application/json";
 axios.defaults.headers.post["Accept"] = "application/json";
 axios.defaults.withCredentials = true;
 axios.defaults.withXSRFToken = true;
 axios.interceptors.request.use(function (config) {
   const token = localStorage.getItem("auth_token");
+  // const refresh_token = localStorage.getItem("refresh_token");
   config.headers.Authorization = token ? `Bearer ${token}` : "";
   return config;
 });
@@ -59,6 +60,10 @@ const root = createBrowserRouter([
         path: "entretiens",
         element: <EntretienPages />,
       },
+      // {
+      //   path: "utilisateurs",
+      //   element: <UtilisateurPage />,
+      // },
     ],
   },
 ]);

@@ -26,6 +26,7 @@ const Register = () => {
 
   const handleChargePage = () => navigate("/dashboard/Tableau-de-bord");
   const [nomE, setNomE] = useState("");
+  const [secteur, setSecteur] = useState("");
   const [adr, setAdr] = useState("");
   const [emailE, setEmailE] = useState("");
 
@@ -35,12 +36,9 @@ const Register = () => {
   const [nomP, setNomP] = useState("");
   const [emailP, setEmailP] = useState("");
   const [mdp, setMdp] = useState("");
+  const [typeUser] = useState("A");
   const [mdpConf, setMdpConf] = useState("");
   const [contact, setContact] = useState<string[]>([]);
-
-  //  const [data, dispatch] = useReducer(reducer, [
-
-  // ])
 
   {
     /* Stepper */
@@ -52,15 +50,17 @@ const Register = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await axios
-      .post("http://127.0.0.1:8002/api/inscription", {
-        name: nomP,
-        EmailENT: emailE,
-        nom: nomE,
-        adr: adr,
-        email: emailP,
-        password: mdp,
-        contacts: contact,
-        password_confirmation: mdpConf,
+      .post("/api/inscription", {
+        user: {
+          pseudo: nomP,
+          mail: emailP,
+          password: mdp,
+          type_user: typeUser,
+        },
+        entreprise: {
+          nom: nomE,
+          secteur: secteur,
+        },
       })
       .then((res) => {
         setNomE("");
@@ -76,7 +76,7 @@ const Register = () => {
         localStorage.setItem("auth_mail", res.data.data.mail);
         localStorage.setItem(
           "auth_Entreprise",
-          JSON.stringify(res.data.data.entreprise)
+          JSON.stringify(res.data.data.entreprise),
         );
         localStorage.setItem("auth_token", res.data.data.token);
         setLoader(false);
@@ -86,6 +86,7 @@ const Register = () => {
         setLoader(false);
         setActiveStep((cur) => cur - 1);
         setError(err.response.message);
+        console.log(err);
       });
   };
 
@@ -99,7 +100,7 @@ const Register = () => {
       setActiveStep,
       handleCLickSubmit,
       loader,
-      handleChargePage
+      handleChargePage,
     );
   }, [activeStep, isLastStep, isFirstStep, loader]);
 
@@ -110,7 +111,7 @@ const Register = () => {
 
   const handleSwitchType = useCallback(
     () => setShowMdp((cur) => (cur === "password" ? "text" : "password")),
-    []
+    [],
   );
 
   return (
@@ -270,7 +271,7 @@ const Register = () => {
                       color="blue-gray"
                       className="-mb-3"
                     >
-                      Email
+                      Contact(s)
                     </Typography>
                     <InputTag
                       placeholder="Saisir le ou les contacts...."
@@ -432,7 +433,7 @@ function ChangingButton(
   setActiveStep: React.Dispatch<React.SetStateAction<number>>,
   handleCLickSubmit: () => void,
   loading: boolean,
-  handleChargePage: () => void
+  handleChargePage: () => void,
 ) {
   const handleNext = () => !isLastStep && setActiveStep((cur) => cur + 1);
 

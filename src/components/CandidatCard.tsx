@@ -13,7 +13,7 @@ export default function CandidatCard({ candidat }: { candidat: Candidat }) {
           variant="h5"
           className="text-[14px] font-semibold text-black"
         >
-          R{candidat.nom}
+          {candidat.nom}
         </Typography>
         <Typography variant="small" className="text-[12px] font-medium">
           {candidat.poste}

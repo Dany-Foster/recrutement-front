@@ -28,8 +28,16 @@ export default function LoginCard() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!email || !mdp) {
+      setError({
+        email: !email ? "Email est requis" : undefined,
+        password: !mdp ? "Mot de passe est requis" : undefined,
+      });
+      return;
+    }
+
     const data = {
-      email: email,
+      mail: email,
       password: mdp,
     };
     setLoading(true);
@@ -43,7 +51,7 @@ export default function LoginCard() {
           localStorage.setItem("auth_role", res.data.data.role);
           localStorage.setItem(
             "auth_Entreprise",
-            JSON.stringify(res.data.data.entreprise)
+            JSON.stringify(res.data.data.entreprise),
           );
           localStorage.setItem("auth_token", res.data.data.token);
         } else {
@@ -66,9 +74,20 @@ export default function LoginCard() {
       });
   };
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    if (name === "email") {
+      setEmail(value);
+      setError((cur) => ({ ...cur, email: "" }));
+    } else if (name === "password") {
+      setMdp(value);
+      setError((cur) => ({ ...cur, password: "" }));
+    }
+  };
+
   const handleSwitchTypeConf = useCallback(
     () => setShowMdpConf((cur) => (cur === "password" ? "text" : "password")),
-    []
+    [],
   );
 
   useEffect(() => {
@@ -118,7 +137,7 @@ export default function LoginCard() {
                 <Input
                   label="Email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => handleChange(e)}
                   size="lg"
                   error={error.email ? true : false}
                 />
@@ -134,7 +153,7 @@ export default function LoginCard() {
                     label="Mot de passe"
                     type={showMdpConf}
                     value={mdp}
-                    onChange={(e) => setMdp(e.target.value)}
+                    onChange={(e) => handleChange(e)}
                     size="lg"
                     error={error.password ? true : false}
                   />

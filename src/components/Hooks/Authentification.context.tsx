@@ -1,7 +1,7 @@
 import axios from "axios";
 import { createContext, useEffect, useMemo, useReducer, useState } from "react";
 import { Navigate } from "react-router-dom";
-import { DeleteOffre, UpdateOffre } from "../API/Donnees/Offres.ts";
+import { UpdateOffre } from "../API/Donnees/Offres.ts";
 import Get_Data from "../API/Donnees/Prechargement.ts";
 import { LOGOUT } from "../API/logout.ts";
 import DataReducer from "./Data.reducer.ts";
@@ -18,7 +18,6 @@ export interface AuthContextType {
   selectOffre: Offres | null;
   setSelectOffre: React.Dispatch<React.SetStateAction<Offres | null>>;
   HandleUpdateOffre: () => void;
-  HandleDeleteOffre: () => void;
   logout: () => void;
 }
 
@@ -28,7 +27,6 @@ const AuthContext = createContext<AuthContextType>({
   selectOffre: null,
   setSelectOffre: () => {},
   HandleUpdateOffre: () => {},
-  HandleDeleteOffre: () => {},
   logout: () => {},
 });
 
@@ -67,23 +65,23 @@ function AuthentificationProvider({ children }: { children: React.ReactNode }) {
     setAuthenticate(false);
   };
 
-  const HandleDeleteOffre = () => {
-    if (selectOffre) {
-      DeleteOffre(selectOffre.id || "")
-        .then((res: boolean | unknown) => {
-          if (res) {
-            dispatch({ type: "DELETE_OFFRE", payload: { id: selectOffre.id } });
-          } else {
-            console.log(res);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  };
+  // const HandleDeleteOffre = () => {
+  //   if (selectOffre) {
+  //     DeleteOffre(selectOffre.id || "")
+  //       .then((res: boolean | unknown) => {
+  //         if (res) {
+  //           dispatch({ type: "DELETE_OFFRE", payload: { id: selectOffre.id } });
+  //         } else {
+  //           console.log(res);
+  //         }
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //       });
+  //   }
+  // };
 
-  const HandleUpdateOffre = (handleChange?: () => void) => {
+  const HandleUpdateOffre = async (handleChange?: () => void) => {
     if (selectOffre) {
       const dataUpdate = {
         titre: selectOffre.titre || "",
@@ -135,7 +133,25 @@ function AuthentificationProvider({ children }: { children: React.ReactNode }) {
         .get("/api/admin/authenticate")
         .then((res) => {
           if (res.status == 200) {
-            if (entreprise !== null) {
+            if (entreprise !== null || user.role == "admin") {
+              const entr = JSON.parse(entreprise);
+              const result = () => {
+                Get_Data().then((res) => {
+                  dispatch({
+                    type: "Prechargement Data",
+                    payload: {
+                      user,
+                      entreprise: entr,
+                      sections: res.sections,
+                      postes: res.postes,
+                      offres: res.offres,
+                      utilisateurs: res.utilisateurs,
+                    },
+                  });
+                });
+              };
+              result();
+            } else if (user.role == "manager" || user.role == "recruteur") {
               const entr = JSON.parse(entreprise);
               const result = () => {
                 Get_Data().then((res) => {
@@ -175,7 +191,6 @@ function AuthentificationProvider({ children }: { children: React.ReactNode }) {
             selectOffre,
             setSelectOffre,
             HandleUpdateOffre,
-            HandleDeleteOffre,
             logout,
           }}
         >

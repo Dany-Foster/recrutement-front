@@ -9,3 +9,5 @@ export const DELETE_OFFRE = "DELETE_OFFRE";
 export const GET_SECTION = "GET_SECTION";
 export const ADD_POSTE = "ADD_POSTE";
 export const UPDATE_OFFRE = "UPDATE_OFFRE";
+
+export const ADD_USER = "ADD_USER";

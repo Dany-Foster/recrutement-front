@@ -8,6 +8,7 @@ export const initialState: DataState = {
   sections: [],
   poste: [],
   errors: [],
+  utilisateurs: [],
   loading: false,
 };
 // L’état du reducer
@@ -16,16 +17,16 @@ export interface DataState {
   entreprise: Entreprise | [];
   candidats: Candidats[] | [];
   offres: Offres[] | [];
-  entretiens?: [];
   sections: Sections[] | [];
   poste: Poste[] | [];
   errors?: [];
   candidat?: Candidats[];
-  entretien: Entretiens[] | [];
+  entretiens: Entretiens[] | [];
+  utilisateurs?: utilisateur[] | [];
   loading?: boolean;
 }
 
-// Exemple de type User
+// Exemple de type User Authentification
 export interface User {
   id: string;
   name: string;
@@ -34,6 +35,15 @@ export interface User {
   token: string;
   mdp?: string;
   confMdp?: string;
+}
+
+// Exemple de utilisateur dans la base de données
+export interface utilisateur {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  contact: string[];
 }
 
 export interface Entreprise {
@@ -46,7 +56,6 @@ export interface Entreprise {
 export interface Candidats {
   id?: number;
   nom?: string;
-  prenom?: string;
   profil?: string;
   email?: string;
   Annee?: string;
@@ -151,6 +160,7 @@ export type DataACTION =
         sections: Sections[];
         postes: Poste[];
         offres: Offres[];
+        utilisateurs?: utilisateur[];
       };
     }
   | { type: "LOGOUT" }
@@ -160,4 +170,5 @@ export type DataACTION =
   | { type: "GET_SECTION"; payload: { sections: Sections[] } }
   | { type: "ADD_POSTE"; payload: { poste: Poste } }
   | { type: "UPDATE_OFFRE"; payload: { offre: Offres } }
-  | { type: "DELETE_OFFRE"; payload: { id: string } };
+  | { type: "DELETE_OFFRE"; payload: { id: string } }
+  | { type: "ADD_USER"; payload: { utilisateur: utilisateur } };

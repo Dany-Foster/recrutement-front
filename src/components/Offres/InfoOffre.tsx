@@ -14,7 +14,7 @@ export default function InfoOffre() {
       selectOffre.criteres.forEach((crt: criteres) => {
         const section: Sections = crt.section;
         switch (section.section) {
-          case "Expériences":
+          case "Experiences":
             setExp(crt.critere);
             break;
           case "Compétences":

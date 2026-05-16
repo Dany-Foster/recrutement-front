@@ -1,6 +1,7 @@
 import {
   ADD_OFFRE,
   ADD_POSTE,
+  ADD_USER,
   DELETE_OFFRE,
   GET_OFFRES,
   GET_SECTION,
@@ -39,6 +40,7 @@ function DataReducer(state: DataState, action: DataACTION): DataState {
         sections: action.payload.sections,
         poste: action.payload.postes,
         offres: action.payload.offres,
+        utilisateurs: action.payload.utilisateurs,
         loading: false,
       };
     case ADD_OFFRE:
@@ -72,6 +74,15 @@ function DataReducer(state: DataState, action: DataACTION): DataState {
             return offre;
           }
         }),
+      };
+
+    case ADD_USER:
+      return {
+        ...state,
+        utilisateurs: [
+          ...(state.utilisateurs ?? []),
+          action.payload.utilisateur,
+        ],
       };
 
     case DELETE_OFFRE:

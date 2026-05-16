@@ -23,7 +23,7 @@ export default function ModifOffre() {
         selectOffre.criteres.forEach((crt: criteres) => {
           const section: Sections = crt.section;
           switch (section.section) {
-            case "Expériences":
+            case "Experiences":
               setExp(crt.critere);
               break;
             case "Compétences":
@@ -48,7 +48,7 @@ export default function ModifOffre() {
       selectOffre.criteres.map((crt: criteres) => crt.id);
     const UpdateCriteres = [
       {
-        section: { id: "1", section: "Expériences" },
+        section: { id: "1", section: "Experiences" },
         id: critereId?.[0],
         critere: Exp,
       },

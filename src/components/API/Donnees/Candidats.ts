@@ -13,7 +13,7 @@ const CreateCandidat = async (data: DataCandidat) => {
         },
       })
       .then((res) => {
-        if (res.status == 200) {
+        if (res.status === 200) {
           return res.data.data;
         }
       });

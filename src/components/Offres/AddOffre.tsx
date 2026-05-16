@@ -205,7 +205,7 @@ export default function AddOffre({
               >
                 Critères de recherche
               </Typography>
-              <div className="flex flex-col ">
+              <div className="flex flex-col gap-4">
                 <InputTag
                   placeholder="Saisir les critères d'expérience ici..."
                   critere={critereExp}

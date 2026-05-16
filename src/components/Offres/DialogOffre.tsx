@@ -16,6 +16,7 @@ import {
 import { useState } from "react";
 import { IoIosClose } from "react-icons/io";
 import { IoBagRemove } from "react-icons/io5";
+import { DeleteOffre } from "../API/Donnees/Offres";
 import { useData } from "../Hooks/useData";
 import CandidatPostule from "./CandidatPostule";
 import InfoOffre from "./InfoOffre";
@@ -28,12 +29,33 @@ export function DialogOffre({
   handleChange: () => void;
 }) {
   const [loader, setLoader] = useState(false);
-  const { HandleUpdateOffre, HandleDeleteOffre } = useData();
+  const { HandleUpdateOffre, selectOffre, dispatch } = useData();
   const HandleModify = () => {
     if (!loader) setLoader(true);
     HandleUpdateOffre(handleChange);
     setLoader(false);
   };
+
+  const HandleDeleteOffre = () => {
+    if (selectOffre) {
+      setLoader(true);
+      DeleteOffre(selectOffre.id || "")
+        .then((res: boolean | unknown) => {
+          if (res) {
+            dispatch({ type: "DELETE_OFFRE", payload: { id: selectOffre.id } });
+          } else {
+            console.log(res);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => {
+          setLoader(false);
+        });
+    }
+  };
+
   return (
     <Dialog size="lg" open={open} handler={handleChange}>
       <DialogHeader className="w-full flex justify-between items-center">
@@ -85,7 +107,7 @@ export function DialogOffre({
         <Button
           variant="text"
           color="red"
-          className="ml-auto"
+          className="ml-auto flex justify-center items-center gap-4"
           onClick={HandleDeleteOffre}
         >
           {loader && <Spinner className="h-4 w-4" />}

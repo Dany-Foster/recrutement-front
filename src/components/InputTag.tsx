@@ -1,6 +1,6 @@
-import React, { useCallback, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 
 /**
  * TagInput (a.k.a chips/token input)
@@ -171,17 +171,17 @@ function TagInput({
           onBlur={addFromInput}
           placeholder={placeholder}
           className="flex-1 min-w-[10ch] bg-transparent outline-none text-sm placeholder:text-gray-400"
-          aria-label="Saisir un tag"
+          aria-label=""
         />
       </div>
-      <div className="mt-1 flex items-center justify-between text-[11px]">
+      {/* <div className="mt-1 flex items-center justify-between text-[11px]">
         <span className="text-red-500 h-4">{error}</span>
         {maxTags ? (
           <span className="text-gray-500">
             {tags.length}/{maxTags}
           </span>
         ) : null}
-      </div>
+      </div> */}
     </div>
   );
 }
@@ -203,7 +203,7 @@ export default function Demo({
   );
 
   return (
-    <div className="mt-2">
+    <div className="">
       <TagInput
         value={critere}
         onChange={setCritere}
