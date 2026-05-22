@@ -19,8 +19,6 @@ import { CiSearch } from "react-icons/ci";
 import { IoIosInformationCircle } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import CandidatCard from "./CandidatCard";
-import { Offres } from "./Hooks/type";
-import { useData } from "./Hooks/useData";
 
 const TABLE_HEAD = ["Offre", "Date", "Heure", "Lieu", "Actions"];
 
@@ -40,14 +38,9 @@ const TABLE_ROWS = [
 ];
 
 export default function EntretiensTable() {
-  const { data } = useData();
-  const [entretien, setEntretien] = useState("");
   const [open, setOpen] = useState(false);
-  const navigate = useNavigate();
   const handleOpen = () => setOpen(!open);
   const [offre, setOffre] = useState("");
-  const [selected, setSelectedCandidat] = useState([]);
-  const HandleNavigate = () => navigate(`/dashboard/entretien/${entretien}`);
   return (
     <div className="w-full flex justify-center items-start gap-2">
       <Card className="w-1/2  bg-white shadow-md">
@@ -298,7 +291,7 @@ export function PlanificationDialog({
   const filtered = candidats.filter(
     (c) =>
       c.nom.toLowerCase().includes(search.toLowerCase()) ||
-      c.poste.toLowerCase().includes(search.toLowerCase())
+      c.poste.toLowerCase().includes(search.toLowerCase()),
   );
 
   const handleSelect = (id: number) => {

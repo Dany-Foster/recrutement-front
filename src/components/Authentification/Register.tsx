@@ -1,3 +1,4 @@
+import { Toast } from "@base-ui/react";
 import {
   Button,
   Card,
@@ -7,24 +8,34 @@ import {
   Stepper,
   Typography,
 } from "@material-tailwind/react";
-import axios from "axios";
 import { House, UserRoundPen } from "lucide-react";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { InputTag } from "..";
+import { useInscription } from "../Hooks/useAuth";
+import { useAuthStore, useErrorManagement } from "../store/useAuthStore";
+
+type Error = {
+  pseudo?: string;
+  mail?: string;
+  password?: string;
+  type_user?: string;
+  nom?: string;
+  secteur?: string;
+  date_creation?: string;
+  adresse?: string;
+  email?: string;
+};
 
 const Register = () => {
   const navigate = useNavigate();
   const [showMdp, setShowMdp] = useState("password");
   const inputmdpRef = useRef<HTMLInputElement>(null);
   const inputmdpConfRef = useRef<HTMLInputElement>(null);
-  const [error, setError] = useState([]);
   {
     /* data Entreprise */
   }
 
-  const handleChargePage = () => navigate("/dashboard/Tableau-de-bord");
   const [nomE, setNomE] = useState("");
   const [secteur, setSecteur] = useState("");
   const [adr, setAdr] = useState("");
@@ -38,7 +49,7 @@ const Register = () => {
   const [mdp, setMdp] = useState("");
   const [typeUser] = useState("A");
   const [mdpConf, setMdpConf] = useState("");
-  const [contact, setContact] = useState<string[]>([]);
+  const [datecreation, setDatecreation] = useState("");
 
   {
     /* Stepper */
@@ -46,63 +57,102 @@ const Register = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [isLastStep, setIsLastStep] = useState(false);
   const [isFirstStep, setIsFirstStep] = useState(false);
-  const [loader, setLoader] = useState(false);
+
+  const { mutate: Inscription, isPending, isError } = useInscription();
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const err = useErrorManagement((s) => s.err);
+  const Toaster = Toast.useToastManager();
+  const [error, setError] = useState<Error>({});
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await axios
-      .post("/api/inscription", {
-        user: {
-          pseudo: nomP,
-          mail: emailP,
-          password: mdp,
-          type_user: typeUser,
-        },
-        entreprise: {
-          nom: nomE,
-          secteur: secteur,
-        },
-      })
-      .then((res) => {
-        setNomE("");
-        setAdr("");
-        setEmailE("");
-        setNomP("");
-        setEmailP("");
-        setMdp("");
-        setMdpConf("");
-        setContact([]);
-        localStorage.setItem("auth_id", res.data.data.id);
-        localStorage.setItem("auth_name", res.data.data.name);
-        localStorage.setItem("auth_mail", res.data.data.mail);
-        localStorage.setItem(
-          "auth_Entreprise",
-          JSON.stringify(res.data.data.entreprise),
-        );
-        localStorage.setItem("auth_token", res.data.data.token);
-        setLoader(false);
-        setActiveStep((cur) => cur + 1);
-      })
-      .catch((err) => {
-        setLoader(false);
-        setActiveStep((cur) => cur - 1);
-        setError(err.response.message);
-        console.log(err);
+    if (
+      !nomP ||
+      !emailP ||
+      !mdp ||
+      !mdpConf ||
+      !typeUser ||
+      !nomE ||
+      !secteur ||
+      !datecreation ||
+      !adr ||
+      !emailE
+    ) {
+      Toaster.add({
+        title: "Champs manquants",
+        description: "Veuillez remplir tous les champs du formulaire.",
       });
+      setActiveStep(0);
+      return;
+    }
+
+    const user = {
+      pseudo: nomP,
+      mail: emailP,
+      password: mdp,
+      type_user: typeUser,
+    };
+    const entreprise = {
+      nom: nomE,
+      secteur: secteur,
+      date_creation: datecreation,
+      adresse: adr,
+      email: emailE,
+    };
+
+    Inscription({ user: user, entreprise: entreprise });
   };
 
-  const handleCLickSubmit = () => setLoader(!loader);
+  useEffect(() => {
+    if (isError) {
+      Toaster.add({
+        title: "Erreur de connexion",
+        description:
+          err ||
+          "Une erreur est survenue lors de l'inscription. Veuillez réessayer.",
+      });
+      setActiveStep(0);
+      setMdp("");
+      setMdpConf("");
+    }
+  }, [isError]);
+
+  useEffect(() => {
+    if (!isPending) {
+      if (isAuthenticated) {
+        Toaster.add({
+          title: "Inscription réussie",
+          description: "Votre compte a été créé avec succès.",
+        });
+        navigate("/dashboard/Tableau-de-bord");
+      }
+    }
+    setActiveStep(0);
+    setError({});
+    setIsFirstStep(true);
+    setIsLastStep(false);
+    setMdpConf("");
+    setMdp("");
+    setNomP("");
+    setNomE("");
+    setSecteur("");
+    setAdr("");
+    setEmailE("");
+    setEmailP("");
+    setDatecreation("");
+  }, [isPending]);
 
   const ShowInformationAction = useMemo(() => {
+    const handleChargePage = () => navigate("/dashboard/Tableau-de-bord");
     return ChangingButton(
       activeStep,
       isLastStep,
       isFirstStep,
       setActiveStep,
-      handleCLickSubmit,
-      loader,
+      isPending,
       handleChargePage,
     );
-  }, [activeStep, isLastStep, isFirstStep, loader]);
+  }, [activeStep, isLastStep, isFirstStep, setActiveStep, isPending, navigate]);
 
   const handleVerification = useMemo(() => passwordSecuity(mdp), [mdp]);
   const ConfirmPassword = useMemo(() => {
@@ -143,9 +193,6 @@ const Register = () => {
             Se connecter
           </a>
         </Typography>
-        <div className="w-full flex flex-col items-center justify-center gap-2">
-          {error && error}
-        </div>
         <Stepper
           activeStep={activeStep}
           isLastStep={(value) => setIsLastStep(value)}
@@ -226,6 +273,7 @@ const Register = () => {
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
+                      error={error.nom ? true : false}
                     />
                   </div>
                   <div className="w-full flex flex-col gap-6">
@@ -245,6 +293,7 @@ const Register = () => {
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
+                      error={error.adresse ? true : false}
                     />
                   </div>
                   <div className="w-full flex flex-col gap-6">
@@ -263,6 +312,7 @@ const Register = () => {
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
+                      error={error.email ? true : false}
                     />
                   </div>
                   <div className="w-full flex flex-col gap-6">
@@ -271,12 +321,36 @@ const Register = () => {
                       color="blue-gray"
                       className="-mb-3"
                     >
-                      Contact(s)
+                      Secteur
                     </Typography>
-                    <InputTag
-                      placeholder="Saisir le ou les contacts...."
-                      critere={contact}
-                      setCritere={setContact}
+                    <Input
+                      value={secteur}
+                      onChange={(e) => setSecteur(e.target.value)}
+                      type="text"
+                      className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                      labelProps={{
+                        className: "before:content-none after:content-none",
+                      }}
+                      error={error.secteur ? true : false}
+                    />
+                  </div>
+                  <div className="w-full flex flex-col gap-6">
+                    <Typography
+                      variant="h6"
+                      color="blue-gray"
+                      className="-mb-3"
+                    >
+                      Date de création
+                    </Typography>
+                    <Input
+                      value={datecreation}
+                      onChange={(e) => setDatecreation(e.target.value)}
+                      type="date"
+                      className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                      labelProps={{
+                        className: "before:content-none after:content-none",
+                      }}
+                      error={error.date_creation ? true : false}
                     />
                   </div>
                 </div>
@@ -303,6 +377,7 @@ const Register = () => {
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
+                      error={error.pseudo ? true : false}
                     />
                   </div>
                   <div className="w-full flex flex-col gap-6">
@@ -321,6 +396,7 @@ const Register = () => {
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
+                      error={error.mail ? true : false}
                     />
                   </div>
                   <div className="w-full flex flex-col gap-2">
@@ -342,6 +418,7 @@ const Register = () => {
                           labelProps={{
                             className: "before:content-none after:content-none",
                           }}
+                          error={error.password ? true : false}
                         />
                         {showMdp === "text" ? (
                           <FaEye
@@ -431,7 +508,6 @@ function ChangingButton(
   isLastStep: boolean,
   isFirstStep: boolean,
   setActiveStep: React.Dispatch<React.SetStateAction<number>>,
-  handleCLickSubmit: () => void,
   loading: boolean,
   handleChargePage: () => void,
 ) {
@@ -442,7 +518,7 @@ function ChangingButton(
   switch (activeStep) {
     case 0:
       return (
-        <Button className="w-full" onClick={handleNext}>
+        <Button className="w-full mt-12" onClick={handleNext}>
           Suivant
         </Button>
       );
@@ -450,15 +526,19 @@ function ChangingButton(
       return (
         <>
           <Button onClick={handlePrev}>Précédent</Button>
-          <Button
-            type="submit"
-            className="flex gap-2"
-            onClick={handleCLickSubmit}
-          >
-            {loading && <Spinner className="h-4 w-4" />}
-            <Typography variant="small" className="font-normal">
-              S'inscrire
-            </Typography>
+          <Button type="submit" className="flex gap-2">
+            {loading ? (
+              <Typography
+                variant="small"
+                className="font-normal flex justify-between items-center gap-4"
+              >
+                <Spinner className="h-4 w-4" /> Souscription en cours...
+              </Typography>
+            ) : (
+              <Typography variant="small" className="font-normal">
+                S'inscrire
+              </Typography>
+            )}
           </Button>
         </>
       );

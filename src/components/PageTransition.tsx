@@ -20,7 +20,7 @@ export default function PageTransition({
 
   return (
     <div className="relative w-full h-full overflow-hidden">
-      <AnimatePresence mode="wait">
+      <AnimatePresence>
         {isLoading && (
           <motion.div
             key="loader"

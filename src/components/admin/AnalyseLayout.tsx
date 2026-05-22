@@ -1,39 +1,27 @@
-import {
-  Button,
-  Card,
-  CardBody,
-  Option,
-  Select,
-  Typography,
-} from "@material-tailwind/react";
-import { FormEvent, useContext, useState } from "react";
+import { Typography } from "@material-tailwind/react";
+import { useState } from "react";
 import { DropZone } from "..";
-import AnalyseResult from "../AnalysResult";
-import { CreateCandidat } from "../API/Donnees/Candidats";
-import { DataCandidat } from "../API/Donnees/type";
-import AuthContext from "../Hooks/Authentification.context";
-import { Candidats, Offres } from "../Hooks/type";
+import { Candidats } from "../Hooks/type";
 
 const AnalyseLayout = () => {
-  const { data } = useContext(AuthContext);
   const [file, setFile] = useState<File | null>(null);
   const [offre, setOffre] = useState("");
   const [candidat, setCandidat] = useState<Candidats | null>(null);
 
   // Appel au données dans le contexte
-  const handleAddCandidat = (e: FormEvent) => {
-    e.preventDefault();
-    const user = data.user.id;
+  // const handleAddCandidat = (e: FormEvent) => {
+  //   e.preventDefault();
+  //   const user = data.user.id;
 
-    const Candidat: DataCandidat = {
-      file: file,
-      user: user,
-      offre_id: offre,
-    };
-    CreateCandidat(Candidat).then((res) => {
-      setCandidat(res ? res : []);
-    });
-  };
+  //   const Candidat: DataCandidat = {
+  //     file: file,
+  //     user: user,
+  //     offre_id: offre,
+  //   };
+  //   CreateCandidat(Candidat).then((res) => {
+  //     setCandidat(res ? res : []);
+  //   });
+  // };
   return (
     <div className="w-full px-2 lg:px-4 mt-4 flex flex-col gap-2">
       <Typography variant="h3" className="text-[20px] font-bold uppercase">
@@ -45,7 +33,7 @@ const AnalyseLayout = () => {
           onSubmit={handleAddCandidat}
           className="w-1/2 flex flex-col justify-center items-center gap-2"
         >
-          <Card className="w-full">
+          {/* <Card className="w-full">
             <CardBody className="w-full flex gap-2 justify-start items-center">
               <Select
                 id="type"
@@ -61,7 +49,7 @@ const AnalyseLayout = () => {
               </Select>
               <Button type="submit">Evaluer</Button>
             </CardBody>
-          </Card>
+          </Card> */}
           <div className="w-full flex flex-col gap-4 justify-center items-center">
             <div className=" w-full bg-white rounded-2xl shadow-md flex justify-center">
               <DropZone
@@ -74,7 +62,7 @@ const AnalyseLayout = () => {
           </div>
         </form>
         <div className="w-1/2 h-[615px]">
-          <AnalyseResult candidat={candidat} />
+          {/* <AnalyseResult candidat={candidat} /> */}
         </div>
       </div>
     </div>

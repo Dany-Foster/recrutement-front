@@ -12,13 +12,10 @@ import {
   Textarea,
   Typography,
 } from "@material-tailwind/react";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { IoIosClose } from "react-icons/io";
 import { IoBagRemove } from "react-icons/io5";
 import { InputTag } from "..";
-import { CreateOffre } from "../API/Donnees/Offres";
-import AuthContext from "../Hooks/Authentification.context";
-import { Poste } from "../Hooks/type";
 
 export default function AddOffre({
   open,
@@ -41,8 +38,6 @@ export default function AddOffre({
   const [critereForm, setCritereForm] = useState<string[]>([]);
   const [critereLang, setCritereLang] = useState<string[]>([]);
 
-  const { data, dispatch } = useContext(AuthContext);
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setLoader(true);
@@ -52,29 +47,18 @@ export default function AddOffre({
       { section_id: 2, critere: critereForm },
       { section_id: 4, critere: critereLang },
     ];
-    const Offre = {
-      titre: titre,
-      desc_ofr: description,
-      date_clot: date_limite,
-      temps_Tr: typeTr,
-      Annee_Exp: Annee,
-      contrat: contrat,
-      critere: Section,
-      entreprise_id: data.entreprise && data.entreprise.id,
-      poste_id: poste,
-      user_id: data.user && data.user.id,
-    };
-    CreateOffre(Offre)
-      .then((res) => {
-        dispatch({ type: "ADD_OFFRE", payload: { offre: res ? res : {} } });
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        setLoader(false);
-        handleChange();
-      });
+    // const Offre = {
+    //   titre: titre,
+    //   desc_ofr: description,
+    //   date_clot: date_limite,
+    //   temps_Tr: typeTr,
+    //   Annee_Exp: Annee,
+    //   contrat: contrat,
+    //   critere: Section,
+    //   entreprise_id: data.entreprise && data.entreprise.id,
+    //   poste_id: poste,
+    //   user_id: data.user && data.user.id,
+    // };
   };
 
   return (
@@ -163,7 +147,7 @@ export default function AddOffre({
                 </div>
               </div>
               <div className="w-full flex gap-2">
-                <Select
+                {/* <Select
                   id="type"
                   value={poste}
                   label="Poste disponible"
@@ -174,7 +158,7 @@ export default function AddOffre({
                       {poste.poste}
                     </Option>
                   ))}
-                </Select>
+                </Select> */}
               </div>
               <div className="w-full">
                 <Select

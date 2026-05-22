@@ -8,34 +8,24 @@ import {
   Textarea,
   Typography,
 } from "@material-tailwind/react";
-import { useContext, useState } from "react";
-import { Add_Poste } from "./API/Donnees/Poste";
-import AuthContext from "./Hooks/Authentification.context";
+import { useState } from "react";
 
 export default function AddPoste() {
   const [poste, setPoste] = useState("");
   const [desc, setDesc] = useState("");
   const [loader, setLoader] = useState(false);
-  const { data, dispatch } = useContext(AuthContext);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoader(true);
-    const donnee = {
-      poste: poste,
-      desc_post: desc,
-      user_id: data.user?.id,
-      entreprise_id: data ? data.entreprise?.id : "",
-    };
+    // const donnee = {
+    //   poste: poste,
+    //   desc_post: desc,
+    //   user_id: data.user?.id,
+    //   entreprise_id: data ? data.entreprise?.id : "",
+    // };
 
     // TODO: Replace with your API call to add a poste, e.g.:
-    Add_Poste(donnee)
-      .then((res) => {
-        dispatch({ type: "ADD_POSTE", payload: { poste: res } });
-      })
-      .finally(() => {
-        setLoader(false);
-      });
 
     setPoste("");
     setDesc("");

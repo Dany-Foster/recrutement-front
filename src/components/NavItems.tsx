@@ -1,9 +1,7 @@
-import { MdLogout } from "react-icons/md";
 // import { useState } from "react";
-import { Button } from "@material-tailwind/react";
 import BoutonMenu from "./BoutonMenu";
-import { useData } from "./Hooks/useData";
 import SearchBar from "./SearchBar";
+import { useAuthStore } from "./store/useAuthStore";
 
 export default function NavItems({
   handleClick,
@@ -14,33 +12,22 @@ export default function NavItems({
     logo: "/assets/icons/logo2.svg",
   };
 
-  const { data, logout, dispatch } = useData();
-
-  const Log = () => {
-    const Interval = setInterval(() => {
-      dispatch({ type: "loading" });
-    }, 1000);
-
-    return () => {
-      clearInterval(Interval);
-      logout();
-    };
-  };
+  const entreprise = useAuthStore((s) => s.entreprise);
 
   return (
     <section className="flex flex-col gap-[2px] h-full" onClick={handleClick}>
-      <div className="flex flex-row items-center gap-2.5 py-1">
+      <div className="flex flex-row items-center gap-2.5 py-4">
         <img
           src={user?.logo}
-          alt={data?.user?.name}
+          alt="logo"
           className="aspect-square size-[30px]"
         />
         <article className="flex flex-col justify-between !gap-[2px] max-w-full">
-          <h2 className="text-xs md:text-[14px] font-bold text-dark-200 truncate">
-            {data?.entreprise?.nom}
+          <h2 className="text-xs md:text-[16px] font-bold text-dark-200 truncate">
+            {entreprise?.nom || "Entreprise"}
           </h2>
-          <p className="text-gray-500 text-xs md:text-[12px] font-normal truncate">
-            {data?.entreprise?.email_E}
+          <p className="text-gray-500 text-xs md:text-[14px] font-normal truncate">
+            {entreprise?.email || "Email non disponible"}
           </p>
         </article>
       </div>
@@ -51,7 +38,7 @@ export default function NavItems({
           <BoutonMenu />
         </div>
         <footer className="border w-full rounded-md bg-[#000]  cursor-pointer">
-          <Button
+          {/* <Button
             className="w-full text-white flex justify-between items-center gap-2"
             onClick={logout}
           >
@@ -59,7 +46,7 @@ export default function NavItems({
               Se déconnecter
             </h2>
             <MdLogout size={25} />
-          </Button>
+          </Button> */}
         </footer>
       </div>
     </section>

@@ -24,13 +24,13 @@ function TagInput({
 }) {
   const [input, setInput] = useState("");
   const [error, setError] = useState("");
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
-  const tags = value ?? [];
+  const tags = value;
 
   const normalized = useCallback(
     (raw: string) => raw.trim().replace(/\s+/g, " "),
-    []
+    [],
   );
 
   const addTag = useCallback(
@@ -66,7 +66,7 @@ function TagInput({
       setError("");
       onChange?.([...tags, t]);
     },
-    [allowDuplicates, maxTags, normalized, onChange, tags, validate]
+    [allowDuplicates, maxTags, normalized, onChange, tags, validate],
   );
 
   const addFromInput = useCallback(() => {
@@ -82,7 +82,7 @@ function TagInput({
       onChange?.(next);
       setError("");
     },
-    [onChange, tags]
+    [onChange, tags],
   );
 
   const handleKeyDown = useCallback(
@@ -97,7 +97,7 @@ function TagInput({
         removeAt(tags.length - 1);
       }
     },
-    [addFromInput, input, removeAt, separators, tags.length]
+    [addFromInput, input, removeAt, separators, tags.length],
   );
 
   const handlePaste = useCallback(
@@ -114,7 +114,7 @@ function TagInput({
         addTag(p);
       }
     },
-    [addTag, normalized]
+    [addTag, normalized],
   );
 
   const containerClasses = useMemo(
@@ -124,7 +124,7 @@ function TagInput({
         "px-3 py-2 flex flex-wrap gap-2 items-center shadow-sm focus:gra",
         className,
       ].join(" "),
-    [className]
+    [className],
   );
 
   return (
@@ -187,7 +187,7 @@ function TagInput({
 }
 
 // Example: Drop-in usage
-export default function Demo({
+export default function InputTag({
   placeholder,
   critere,
   setCritere,
@@ -199,7 +199,7 @@ export default function Demo({
   // optional: simple validator example (min length)
   const validate = useCallback(
     (t: string) => (t.length < 2 ? "Au moins 2 caractères" : true),
-    []
+    [],
   );
 
   return (
@@ -216,25 +216,25 @@ export default function Demo({
   );
 }
 
-function Tips() {
-  return (
-    <ul className="mt-6 space-y-2 text-[12px] text-gray-600 dark:text-gray-300 list-disc pl-5">
-      <li>
-        Appuie sur <kbd className="px-1 border rounded">Entrée</kbd> ou tape une
-        virgule pour créer un tag.
-      </li>
-      <li>
-        <kbd className="px-1 border rounded">Backspace</kbd> supprime le dernier
-        tag si l’input est vide.
-      </li>
-      <li>
-        Colle plusieurs éléments (séparés par virgules, points-virgules ou
-        retours à la ligne) pour les ajouter d’un coup.
-      </li>
-      <li>
-        Personnalise l’animation dans les props <code>initial</code>/
-        <code>animate</code>/<code>exit</code> de <code>motion.span</code>.
-      </li>
-    </ul>
-  );
-}
+// function Tips() {
+//   return (
+//     <ul className="mt-6 space-y-2 text-[12px] text-gray-600 dark:text-gray-300 list-disc pl-5">
+//       <li>
+//         Appuie sur <kbd className="px-1 border rounded">Entrée</kbd> ou tape une
+//         virgule pour créer un tag.
+//       </li>
+//       <li>
+//         <kbd className="px-1 border rounded">Backspace</kbd> supprime le dernier
+//         tag si l’input est vide.
+//       </li>
+//       <li>
+//         Colle plusieurs éléments (séparés par virgules, points-virgules ou
+//         retours à la ligne) pour les ajouter d’un coup.
+//       </li>
+//       <li>
+//         Personnalise l’animation dans les props <code>initial</code>/
+//         <code>animate</code>/<code>exit</code> de <code>motion.span</code>.
+//       </li>
+//     </ul>
+//   );
+// }

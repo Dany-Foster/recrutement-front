@@ -7,21 +7,21 @@ import {
   MenuList,
   Typography,
 } from "@material-tailwind/react";
-import { useContext } from "react";
 import { CgProfile } from "react-icons/cg";
 import { IoNotifications } from "react-icons/io5";
 import { TbLogout2 } from "react-icons/tb";
 import { formatDate } from "../lib/utils";
-import AuthContext from "./Hooks/Authentification.context";
+import { useAuthStore } from "./store/useAuthStore";
 export default function HeaderDashboard() {
-  const { data } = useContext(AuthContext);
   const date = new Date();
+  const user = useAuthStore((s) => s.user);
   const Androany = formatDate(`${date}`);
   return (
     <header className="px-4 py-2 lg:px-5 lg:py-2 w-full flex items-center bg-white border-solid border-2 border-[#F5F7F9] shadow-md rounded-md justify-between z-100">
       <div className="flex flex-col gap-1">
         <h3 className="text-[14px] font-semibold ">
-          Bienvenue {data.user && data.user.name}
+          Bienvenue{" "}
+          <span className="text-blue-700">{user?.pseudo || "Invité"}</span>
         </h3>
         <p className="text-[12px] font-normal text-[#75767C]">{Androany}</p>
       </div>

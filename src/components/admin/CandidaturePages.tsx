@@ -12,9 +12,7 @@ import {
   DialogHeader,
   IconButton,
   Input,
-  Option,
   Progress,
-  Select,
   Tab,
   TabPanel,
   Tabs,
@@ -23,17 +21,13 @@ import {
   Tooltip,
   Typography,
 } from "@material-tailwind/react";
-import { FormEvent, useContext, useState } from "react";
+import { useState } from "react";
 import Chart from "react-apexcharts";
 import { IoIosClose } from "react-icons/io";
-import { IoClose, IoPersonAddSharp } from "react-icons/io5";
+import { IoPersonAddSharp } from "react-icons/io5";
 import { LuSearch } from "react-icons/lu";
 import { SlOptions } from "react-icons/sl";
 import { useNavigate } from "react-router-dom";
-import { DropZone } from "..";
-import { CreateCandidat } from "../API/Donnees/Candidats";
-import AuthContext from "../Hooks/Authentification.context";
-import { Offres } from "../Hooks/type";
 
 const TABS = [
   {
@@ -184,7 +178,7 @@ export default function CandidaturePages() {
             </thead>
             <tbody>
               {TABLE_ROWS.map(
-                ({ img, name, email, job, org, online, date, bg }, index) => {
+                ({ name, email, job, org, online, date, bg }, index) => {
                   const isLast = index === TABLE_ROWS.length - 1;
                   const classes = isLast
                     ? "p-4"
@@ -270,7 +264,7 @@ export default function CandidaturePages() {
                       </td>
                     </tr>
                   );
-                }
+                },
               )}
             </tbody>
           </table>
@@ -294,82 +288,81 @@ export default function CandidaturePages() {
   );
 }
 
-export function AddCandidat({
-  open,
-  HandleOpen,
-}: {
-  open: boolean;
-  HandleOpen: () => void;
-}) {
-  const { data } = useContext(AuthContext);
-  const [file, setFile] = useState<File | null>(null);
-  const [offre, setOffre] = useState("");
+// export function AddCandidat({
+//   open,
+//   HandleOpen,
+// }: {
+//   open: boolean;
+//   HandleOpen: () => void;
+// }) {
+//   const [file, setFile] = useState<File | null>(null);
+//   const [offre, setOffre] = useState("");
 
-  // Appel au données dans le contexte
-  const handleAddCandidat = (e: FormEvent) => {
-    e.preventDefault();
-    const user = data.user.id;
+//   // Appel au données dans le contexte
+//   // const handleAddCandidat = (e: FormEvent) => {
+//   //   e.preventDefault();
+//   //   const user = data.user.id;
 
-    const Candidat = {
-      file: file,
-      user: user,
-      offre_id: offre,
-    };
-    CreateCandidat(Candidat);
-  };
+//   //   const Candidat = {
+//   //     file: file,
+//   //     user: user,
+//   //     offre_id: offre,
+//   //   };
+//   //   CreateCandidat(Candidat);
+//   // };
 
-  return (
-    <Dialog size="sm" open={open} handler={HandleOpen} className="p-4">
-      <DialogHeader className="relative m-0 block">
-        <Typography
-          variant="h4"
-          color="blue-gray"
-          className="text-[20px] font-bold uppercase"
-        >
-          Ajouter un candidat
-        </Typography>
-        <Typography className="mt-1 font-normal font-gray-400">
-          Ajouter un candadit à partir de son CV
-        </Typography>
-        <IconButton
-          size="md"
-          variant="text"
-          className="!absolute right-3.5 top-3.5"
-          onClick={HandleOpen}
-        >
-          <IoClose className="h-4 w-4" />
-        </IconButton>
-      </DialogHeader>
-      <DialogBody className="space-y-4">
-        <form onSubmit={handleAddCandidat} className="flex flex-col gap-4">
-          <Select
-            id="type"
-            value={offre}
-            label="Offre disponibles"
-            onChange={(val) => val !== undefined && setOffre(val)}
-          >
-            {data.offres.map((donnee: Offres, index: number) => (
-              <Option key={index} value={donnee.id}>
-                {donnee.titre}
-              </Option>
-            ))}
-          </Select>
-          <div className="flex flex-col gap-2">
-            <DropZone
-              onFiles={(files) => setFile(files)}
-              fichier={file}
-              accept=".pdf"
-              multiple={false}
-            />
-          </div>
-          <Button type="submit" variant="gradient" color="green">
-            Ajouter la candidature
-          </Button>
-        </form>
-      </DialogBody>
-    </Dialog>
-  );
-}
+//   return (
+//     <Dialog size="sm" open={open} handler={HandleOpen} className="p-4">
+//       <DialogHeader className="relative m-0 block">
+//         <Typography
+//           variant="h4"
+//           color="blue-gray"
+//           className="text-[20px] font-bold uppercase"
+//         >
+//           Ajouter un candidat
+//         </Typography>
+//         <Typography className="mt-1 font-normal font-gray-400">
+//           Ajouter un candadit à partir de son CV
+//         </Typography>
+//         <IconButton
+//           size="md"
+//           variant="text"
+//           className="!absolute right-3.5 top-3.5"
+//           onClick={HandleOpen}
+//         >
+//           <IoClose className="h-4 w-4" />
+//         </IconButton>
+//       </DialogHeader>
+//       <DialogBody className="space-y-4">
+//         <form onSubmit={handleAddCandidat} className="flex flex-col gap-4">
+//           <Select
+//             id="type"
+//             value={offre}
+//             label="Offre disponibles"
+//             onChange={(val) => val !== undefined && setOffre(val)}
+//           >
+//             {data.offres.map((donnee: Offres, index: number) => (
+//               <Option key={index} value={donnee.id}>
+//                 {donnee.titre}
+//               </Option>
+//             ))}
+//           </Select>
+//           <div className="flex flex-col gap-2">
+//             <DropZone
+//               onFiles={(files) => setFile(files)}
+//               fichier={file}
+//               accept=".pdf"
+//               multiple={false}
+//             />
+//           </div>
+//           <Button type="submit" variant="gradient" color="green">
+//             Ajouter la candidature
+//           </Button>
+//         </form>
+//       </DialogBody>
+//     </Dialog>
+//   );
+// }
 
 export function ModalCardCandidat({
   open,
