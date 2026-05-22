@@ -7,7 +7,7 @@ export const api = axios.create({ baseURL: "http://127.0.0.1:8000/" });
 api.interceptors.request.use(function (config) {
   const token = useAuthStore.getState().token as Token;
   if (token) {
-    config.headers["Authorization"] = `Bearer ${token.token}`;
+    config.headers["Authorization"] = `Bearer ${token.access}`;
   }
   return config;
 });

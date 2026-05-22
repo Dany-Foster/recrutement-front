@@ -55,22 +55,40 @@ export const useInscription = () => {
 
 export const useMe = () => {
   const queryClient = useQueryClient();
-  const refresh_token = useAuthStore.getState().token?.refresh_token;
-  return useMutation<
-    void,
-    AxiosError<ErrorResponses>,
-    { refresh_token: string }
-  >({
+  const access_token = useAuthStore.getState().token?.access;
+  const { mutate } = useRefreshToken();
+  return useMutation<void, AxiosError<ErrorResponses>, void>({
     mutationFn: async () =>
       await api.post(
         "api/token/verify/",
-        refresh_token ? { refresh_token: refresh_token } : {},
+        access_token ? { token: access_token } : { token: "no_token" },
       ),
     onSuccess: () => {
       queryClient.invalidateQueries();
     },
     onError: (err) => {
-      if (err.response) {
+      if (err.response?.status === 401) {
+        mutate();
+      }
+      queryClient.invalidateQueries();
+    },
+  });
+};
+
+export const useRefreshToken = () => {
+  const queryClient = useQueryClient();
+  const refresh_token = useAuthStore.getState().token?.refresh_token;
+  return useMutation<void, AxiosError<ErrorResponses>, void>({
+    mutationFn: async () =>
+      await api.post(
+        "api/token/verify/",
+        refresh_token ? { token: refresh_token } : { token: "no_token" },
+      ),
+    onSuccess: () => {
+      queryClient.invalidateQueries();
+    },
+    onError: (err) => {
+      if (err.response?.status === 401) {
         useAuthStore.getState().clearAuth();
       }
       queryClient.invalidateQueries();
@@ -81,15 +99,11 @@ export const useMe = () => {
 export const useLogout = () => {
   const queryClient = useQueryClient();
   const refresh_token = useAuthStore.getState().token?.refresh_token;
-  return useMutation<
-    void,
-    AxiosError<ErrorResponses>,
-    { refresh_token: string }
-  >({
+  return useMutation<void, AxiosError<ErrorResponses>, void>({
     mutationFn: async () => {
       await api.post(
         "api/logout/",
-        refresh_token ? { token: refresh_token } : {},
+        refresh_token ? { refresh: refresh_token } : {},
       );
     },
     onSuccess: () => {

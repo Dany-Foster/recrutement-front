@@ -33,7 +33,7 @@ type Entreprise = {
 };
 
 type Token = {
-  token: string;
+  access: string;
   refresh_token: string;
 };
 
@@ -102,5 +102,6 @@ export type {
   LoginResponse,
   loginType,
   Token,
-  UserView,
+  UserView
 };
+

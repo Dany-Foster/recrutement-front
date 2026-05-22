@@ -11,6 +11,7 @@ import { CgProfile } from "react-icons/cg";
 import { IoNotifications } from "react-icons/io5";
 import { TbLogout2 } from "react-icons/tb";
 import { formatDate } from "../lib/utils";
+import { useLogout } from "./Hooks/useAuth";
 import { useAuthStore } from "./store/useAuthStore";
 export default function HeaderDashboard() {
   const date = new Date();
@@ -75,6 +76,7 @@ export function NotificationList() {
 }
 
 export function ProfilDropDown() {
+  const { mutate } = useLogout();
   return (
     <Menu
       placement="bottom-end"
@@ -99,7 +101,10 @@ export function ProfilDropDown() {
           </Typography>
         </MenuItem>
         <hr className="my-3" />
-        <MenuItem className="flex items-center gap-2 py-2 pl-2 pr-8 text-red-500 hover:bg-red-100/50 focus:bg-red-100/50 active:bg-red-100/50">
+        <MenuItem
+          className="flex items-center gap-2 py-2 pl-2 pr-8 text-red-500 hover:bg-red-100/50 focus:bg-red-100/50 active:bg-red-100/50"
+          onClick={() => mutate()}
+        >
           <TbLogout2 size={15} />
           <Typography variant="small" className="font-medium">
             Se déconnecter

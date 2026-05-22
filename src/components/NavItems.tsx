@@ -1,5 +1,8 @@
 // import { useState } from "react";
+import { Button } from "@material-tailwind/react";
+import { MdLogout } from "react-icons/md";
 import BoutonMenu from "./BoutonMenu";
+import { useLogout } from "./Hooks/useAuth";
 import SearchBar from "./SearchBar";
 import { useAuthStore } from "./store/useAuthStore";
 
@@ -13,6 +16,7 @@ export default function NavItems({
   };
 
   const entreprise = useAuthStore((s) => s.entreprise);
+  const { mutate } = useLogout();
 
   return (
     <section className="flex flex-col gap-[2px] h-full" onClick={handleClick}>
@@ -38,15 +42,15 @@ export default function NavItems({
           <BoutonMenu />
         </div>
         <footer className="border w-full rounded-md bg-[#000]  cursor-pointer">
-          {/* <Button
+          <Button
             className="w-full text-white flex justify-between items-center gap-2"
-            onClick={logout}
+            onClick={() => mutate()}
           >
             <h2 className="text-[12px] font-semibold text-white">
               Se déconnecter
             </h2>
             <MdLogout size={25} />
-          </Button> */}
+          </Button>
         </footer>
       </div>
     </section>
