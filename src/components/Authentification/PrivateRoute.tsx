@@ -1,31 +1,41 @@
 import { Toast } from "@base-ui/react";
 import React, { useEffect } from "react";
 import { Navigate } from "react-router-dom";
-import { useMe } from "../Hooks/useAuth";
+import { useMe, useRefreshToken } from "../Hooks/useAuth";
 import PageTransition from "../PageTransition";
-import { useAuthStore } from "../store/useAuthStore";
+import { useAuthStore, useErrorManagement } from "../store/useAuthStore";
 
 function PrivateRoute({ children }: { children?: React.ReactNode }) {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const isValidTokenAccess = useAuthStore((s) => s.isValidTokenAccess);
   const { mutate: verifyToken, isError, isPending } = useMe();
+  const { mutate: RefreshToken } = useRefreshToken();
+  const authError = useErrorManagement((s) => s.authentification);
   const ToastManager = Toast.useToastManager();
 
   useEffect(() => {
-    verifyToken();
-  }, [verifyToken]);
+    if (!isValidTokenAccess && isAuthenticated) {
+      RefreshToken();
+    } else {
+      verifyToken();
+    }
+  }, [isAuthenticated, isValidTokenAccess]);
 
-  if (isError) {
-    ToastManager.add({
-      title: "Session expirée",
-      description: "Veuillez vous reconnecter.",
-    });
+  useEffect(() => {
+    if (authError) {
+      ToastManager.add({
+        title: "Problème d'authentification",
+        description: authError?.message,
+      });
+    }
+    useErrorManagement.setState({ authentification: null });
+  }, [isError]);
+
+  if (!isAuthenticated) {
+    return <Navigate to="/" />;
   }
 
-  return isAuthenticated ? (
-    <PageTransition loading={isPending}>{children}</PageTransition>
-  ) : (
-    <Navigate to="/" />
-  );
+  return <PageTransition loading={isPending}>{children}</PageTransition>;
 }
 
 export default PrivateRoute;

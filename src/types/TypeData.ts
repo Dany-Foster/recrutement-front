@@ -5,7 +5,7 @@ type loginType = {
 
 type UserView = {
   id: number;
-  pseudo: string;
+  username: string;
   email: string;
   status_user: string;
   type_user: string;
@@ -14,16 +14,31 @@ type UserView = {
 type AuthState = {
   user: UserView | null;
   entreprise: Entreprise | null;
-  token: Token | null;
+  access: string | null;
+  refresh: string | null;
   isAuthenticated: boolean;
+  isValidTokenAccess: boolean;
   setAuthenticated: (Auth: boolean) => void;
-  setAuth: (user: UserView, token: Token, entreprise: Entreprise) => void;
+  setIsValidTokenAccess: (isValid: boolean) => void;
+  setAuth: (
+    user: UserView,
+    access: string,
+    refresh: string,
+    entreprise: Entreprise,
+  ) => void;
   clearAuth: () => void;
 };
 
+type ErrorType = {
+  message?: string;
+  status?: number;
+};
 type ErrorState = {
-  err: string | null;
-  setError: (err: string) => void;
+  utilisateur?: ErrorType | null;
+  authentification?: ErrorType | null;
+  login?: ErrorType | null;
+  register?: ErrorType | null;
+  setError: (state: Partial<ErrorState>) => void;
 };
 
 type Entreprise = {
@@ -39,17 +54,19 @@ type Token = {
 
 type LoginResponse = {
   user: UserView;
-  token: Token;
+  access: string;
+  refresh: string;
   entreprise: Entreprise;
 };
 
 type LoginPlayload = {
-  mail: string;
+  email: string;
   password: string;
 };
 
 interface ErrorResponses {
   error: string;
+  detail?: string;
 }
 
 type ErrResponse = {
@@ -58,8 +75,8 @@ type ErrResponse = {
 };
 
 type UserWrite = {
-  pseudo: string;
-  mail: string;
+  username: string;
+  email: string;
   password: string;
   type_user: string;
 };
@@ -74,7 +91,8 @@ type EntrepriseWrite = {
 
 interface InscrResponse {
   user: UserView;
-  token: Token;
+  access: string;
+  refresh: string;
   entreprise: Entreprise;
 }
 
@@ -102,6 +120,5 @@ export type {
   LoginResponse,
   loginType,
   Token,
-  UserView
+  UserView,
 };
-

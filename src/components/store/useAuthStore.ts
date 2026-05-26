@@ -4,7 +4,6 @@ import {
   AuthState,
   Entreprise,
   ErrorState,
-  Token,
   UserView,
 } from "../../types/TypeData";
 
@@ -13,15 +12,25 @@ export const useAuthStore = create(
     (set) => ({
       user: null,
       entreprise: null,
-      token: null,
+      access: null,
+      refresh: null,
+      isValidTokenAccess: false,
       isAuthenticated: false,
       setAuthenticated: (Auth: boolean) => set({ isAuthenticated: Auth }),
-      setAuth: (user: UserView, token: Token, entreprise: Entreprise) =>
-        set({ user, token, entreprise }),
+      setIsValidTokenAccess: (isValid: boolean) =>
+        set({ isValidTokenAccess: isValid }),
+      setAuth: (
+        user: UserView,
+        access: string,
+        refresh: string,
+        entreprise: Entreprise,
+      ) => set({ user, access, refresh, entreprise, isValidTokenAccess: true }),
       clearAuth: () =>
         set({
           user: null,
-          token: null,
+          access: null,
+          refresh: null,
+          isValidTokenAccess: false,
           entreprise: null,
           isAuthenticated: false,
         }),
@@ -33,6 +42,9 @@ export const useAuthStore = create(
 );
 
 export const useErrorManagement = create<ErrorState>((set) => ({
-  err: null,
-  setError: (err: string) => set({ err }),
+  utilisateur: null,
+  authentification: null,
+  login: null,
+  register: null,
+  setError: (state: Partial<ErrorState>) => set((s) => ({ ...s, ...state })),
 }));

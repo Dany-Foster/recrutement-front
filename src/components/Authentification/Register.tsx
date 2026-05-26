@@ -60,7 +60,7 @@ const Register = () => {
 
   const { mutate: Inscription, isPending, isError } = useInscription();
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
-  const err = useErrorManagement((s) => s.err);
+  const err = useErrorManagement((s) => s.authentification?.message);
   const Toaster = Toast.useToastManager();
   const [error, setError] = useState<Error>({});
 
@@ -87,8 +87,8 @@ const Register = () => {
     }
 
     const user = {
-      pseudo: nomP,
-      mail: emailP,
+      username: nomP,
+      email: emailP,
       password: mdp,
       type_user: typeUser,
     };
@@ -124,22 +124,20 @@ const Register = () => {
           title: "Inscription réussie",
           description: "Votre compte a été créé avec succès.",
         });
-        navigate("/dashboard/Tableau-de-bord");
       }
+      setError({});
+      setIsFirstStep(true);
+      setIsLastStep(false);
+      setMdpConf("");
+      setMdp("");
+      setNomP("");
+      setNomE("");
+      setSecteur("");
+      setAdr("");
+      setEmailE("");
+      setEmailP("");
+      setDatecreation("");
     }
-    setActiveStep(0);
-    setError({});
-    setIsFirstStep(true);
-    setIsLastStep(false);
-    setMdpConf("");
-    setMdp("");
-    setNomP("");
-    setNomE("");
-    setSecteur("");
-    setAdr("");
-    setEmailE("");
-    setEmailP("");
-    setDatecreation("");
   }, [isPending]);
 
   const ShowInformationAction = useMemo(() => {

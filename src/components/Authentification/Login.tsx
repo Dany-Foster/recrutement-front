@@ -26,7 +26,7 @@ export default function LoginCard() {
   const [error, setError] = useState<Error>({});
   const [showMdpConf, setShowMdpConf] = useState("password");
   const { mutate: loginSubmit, isPending, isError } = useLogin();
-  const err = useErrorManagement((s) => s.err);
+  const err = useErrorManagement((s) => s.authentification);
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const toastManager = Toast.useToastManager();
   const navigate = useNavigate();
@@ -40,7 +40,7 @@ export default function LoginCard() {
       });
       return;
     }
-    loginSubmit({ mail: email, password: mdp });
+    loginSubmit({ email: email, password: mdp });
   };
 
   const handleSwitchTypeConf = useCallback(
@@ -49,10 +49,12 @@ export default function LoginCard() {
   );
 
   useEffect(() => {
-    if (isError) {
+    if (isError && err) {
       toastManager.add({
         title: "Erreur de connexion",
-        description: err,
+        description:
+          err?.message ||
+          "Une erreur est survenue lors de la connexion. Veuillez réessayer.",
       });
       setMdp("");
     }
@@ -60,10 +62,6 @@ export default function LoginCard() {
 
   useEffect(() => {
     if (isAuthenticated) {
-      toastManager.add({
-        title: "Connexion réussie",
-        description: "Vous êtes connecté avec succès.",
-      });
       navigate("/dashboard/Tableau-de-bord");
     }
   }, [isAuthenticated]);

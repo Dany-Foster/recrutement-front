@@ -22,7 +22,7 @@ export default function HeaderDashboard() {
       <div className="flex flex-col gap-1">
         <h3 className="text-[14px] font-semibold ">
           Bienvenue{" "}
-          <span className="text-blue-700">{user?.pseudo || "Invité"}</span>
+          <span className="text-blue-700">{user?.username || "Invité"}</span>
         </h3>
         <p className="text-[12px] font-normal text-[#75767C]">{Androany}</p>
       </div>

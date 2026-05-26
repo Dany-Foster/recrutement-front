@@ -13,10 +13,10 @@ import { useAuthStore, useErrorManagement } from "../store/useAuthStore";
 export const useLogin = () => {
   const queryClient = useQueryClient();
   return useMutation<LoginResponse, AxiosError<ErrorResponses>, LoginPlayload>({
-    mutationFn: async ({ mail, password }) =>
-      await api.post("api/login/", { mail, password }),
-    onSuccess: ({ user, token, entreprise }: LoginResponse) => {
-      useAuthStore.getState().setAuth(user, token, entreprise);
+    mutationFn: async ({ email, password }) =>
+      await api.post("api/login/", { email, password }),
+    onSuccess: ({ user, access, refresh, entreprise }: LoginResponse) => {
+      useAuthStore.getState().setAuth(user, access, refresh, entreprise);
       useAuthStore.setState({
         isAuthenticated: true,
       });
@@ -24,7 +24,12 @@ export const useLogin = () => {
     },
     onError: (err) => {
       if (err.response) {
-        useErrorManagement.getState().setError(err.response.data.error);
+        useErrorManagement.getState().setError({
+          authentification: {
+            status: err.response.status,
+            message: err.response.data.detail,
+          },
+        });
       }
       queryClient.invalidateQueries();
     },
@@ -36,8 +41,8 @@ export const useInscription = () => {
   return useMutation<InscrResponse, AxiosError<ErrorResponses>, InscrPlayload>({
     mutationFn: async ({ user, entreprise }) =>
       await api.post("api/inscription/", { user, entreprise }),
-    onSuccess: ({ user, token, entreprise }: InscrResponse) => {
-      useAuthStore.getState().setAuth(user, token, entreprise);
+    onSuccess: ({ user, access, refresh, entreprise }: InscrResponse) => {
+      useAuthStore.getState().setAuth(user, access, refresh, entreprise);
       useAuthStore.setState({
         isAuthenticated: true,
       });
@@ -46,8 +51,17 @@ export const useInscription = () => {
     onError: (err) => {
       if (err.response) {
         console.log(err.response);
-        useErrorManagement.getState().setError(err.response.data.error);
+        useErrorManagement.getState().setError({
+          authentification: {
+            status: err.response.status,
+            message: err.response.data.error,
+          },
+        });
+        if (err.response.data.detail) {
+          console.log(err.response.data.detail);
+        }
       }
+
       queryClient.invalidateQueries();
     },
   });
@@ -55,8 +69,7 @@ export const useInscription = () => {
 
 export const useMe = () => {
   const queryClient = useQueryClient();
-  const access_token = useAuthStore.getState().token?.access;
-  const { mutate } = useRefreshToken();
+  const access_token = useAuthStore.getState().access;
   return useMutation<void, AxiosError<ErrorResponses>, void>({
     mutationFn: async () =>
       await api.post(
@@ -68,7 +81,20 @@ export const useMe = () => {
     },
     onError: (err) => {
       if (err.response?.status === 401) {
-        mutate();
+        if (useAuthStore.getState().access) {
+          useAuthStore.setState({ isValidTokenAccess: false });
+        } else {
+          useErrorManagement.getState().setError({
+            authentification: {
+              message: "Veuillez vous connecter pour accéder au dashboard",
+              status: err.response.status,
+            },
+          });
+          useAuthStore.getState().clearAuth();
+        }
+        if (err.response.data.detail) {
+          console.log(err.response.data.detail);
+        }
       }
       queryClient.invalidateQueries();
     },
@@ -77,18 +103,24 @@ export const useMe = () => {
 
 export const useRefreshToken = () => {
   const queryClient = useQueryClient();
-  const refresh_token = useAuthStore.getState().token?.refresh_token;
+  const refresh_token = useAuthStore.getState().refresh;
   return useMutation<void, AxiosError<ErrorResponses>, void>({
     mutationFn: async () =>
       await api.post(
-        "api/token/verify/",
-        refresh_token ? { token: refresh_token } : { token: "no_token" },
+        "api/token/refresh/",
+        refresh_token ? { refresh: refresh_token } : { refresh: "no_token" },
       ),
     onSuccess: () => {
       queryClient.invalidateQueries();
     },
     onError: (err) => {
       if (err.response?.status === 401) {
+        useErrorManagement.getState().setError({
+          authentification: {
+            message: "Votre session a expiré. Veuillez vous reconnecter.",
+            status: err.response.status,
+          },
+        });
         useAuthStore.getState().clearAuth();
       }
       queryClient.invalidateQueries();
@@ -98,7 +130,7 @@ export const useRefreshToken = () => {
 
 export const useLogout = () => {
   const queryClient = useQueryClient();
-  const refresh_token = useAuthStore.getState().token?.refresh_token;
+  const refresh_token = useAuthStore.getState().refresh;
   return useMutation<void, AxiosError<ErrorResponses>, void>({
     mutationFn: async () => {
       await api.post(
@@ -108,12 +140,19 @@ export const useLogout = () => {
     },
     onSuccess: () => {
       useAuthStore.getState().clearAuth();
-
       queryClient.invalidateQueries();
     },
     onError: (err) => {
       if (err.response) {
-        useErrorManagement.getState().setError(err.response.data.error);
+        useErrorManagement.setState({
+          authentification: {
+            message: err.response.data.error,
+            status: err.response.status,
+          },
+        });
+        if (err.response.data.detail) {
+          console.log(err.response.data.detail);
+        }
       }
       queryClient.invalidateQueries();
     },
